@@ -121,7 +121,7 @@
     "vite-plugin-pwa": "0.11.13",
     "vite-plugin-style-import": "1.4.1",
     "vitepress": "0.20.10",
-    "vitest": "0.0.127",
+    "vitest": "0.2.7",
     "vue": "3.2.29",
     "vue-eslint-parser": "8.2.0",
     "vue-i18n": "9.2.0-beta.30",
