@@ -30,7 +30,7 @@ specifiers:
   '@vue/compat': 3.2.29
   '@vue/runtime-dom': 3.2.29
   '@vue/shared': 3.2.29
-  axios: 0.24.0
+  axios: 0.25.0
   chalk: ^5.0.0
   chokidar: 3.5.3
   concurrently: 7.0.0
@@ -158,7 +158,7 @@ devDependencies:
   '@vue/compat': 3.2.29_vue@3.2.29
   '@vue/runtime-dom': 3.2.29
   '@vue/shared': 3.2.29
-  axios: 0.24.0
+  axios: 0.25.0
   chokidar: 3.5.3
   concurrently: 7.0.0
   cypress: 9.4.1
@@ -3741,10 +3741,10 @@ packages:
   /aws4/1.11.0:
     resolution: {integrity: sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==}
 
-  /axios/0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.25.0:
+    resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.14.6
+      follow-redirects: 1.14.7
     transitivePeerDependencies:
       - debug
     dev: true
@@ -6754,8 +6754,8 @@ packages:
       readable-stream: 2.3.7
     dev: true
 
-  /follow-redirects/1.14.6:
-    resolution: {integrity: sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==}
+  /follow-redirects/1.14.7:
+    resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
