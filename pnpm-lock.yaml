@@ -36,7 +36,7 @@ specifiers:
   concurrently: 7.0.0
   cypress: 9.4.1
   dayjs: 1.10.7
-  echarts: 4.9.0
+  echarts: 5.3.0
   electron: 17.0.0
   electron-builder: 22.14.5
   electron-reloader: 1.2.1
@@ -163,7 +163,7 @@ devDependencies:
   concurrently: 7.0.0
   cypress: 9.4.1
   dayjs: 1.10.7
-  echarts: 4.9.0
+  echarts: 5.3.0
   electron: 17.0.0
   electron-builder: 22.14.5
   electron-reloader: 1.2.1
@@ -5409,10 +5409,11 @@ packages:
       jsbn: 0.1.1
       safer-buffer: 2.1.2
 
-  /echarts/4.9.0:
-    resolution: {integrity: sha512-+ugizgtJ+KmsJyyDPxaw2Br5FqzuBnyOWwcxPKO6y0gc5caYcfnEUIlNStx02necw8jmKmTafmpHhGo4XDtEIA==}
+  /echarts/5.3.0:
+    resolution: {integrity: sha512-zENufmwFE6WjM+24tW3xQq4ICqQtI0CGj4bDVDNd3BK3LtaA/5wBp+64ykIyKy3QElz0cieKqSYP4FX9Lv9MwQ==}
     dependencies:
-      zrender: 4.3.2
+      tslib: 2.3.0
+      zrender: 5.3.0
     dev: true
 
   /edge-paths/2.2.1:
@@ -12321,6 +12322,10 @@ packages:
     resolution: {integrity: sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==}
     dev: true
 
+  /tslib/2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+    dev: true
+
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
 
@@ -13816,6 +13821,8 @@ packages:
       readable-stream: 3.6.0
     dev: true
 
-  /zrender/4.3.2:
-    resolution: {integrity: sha512-bIusJLS8c4DkIcdiK+s13HiQ/zjQQVgpNohtd8d94Y2DnJqgM1yjh/jpDb8DoL6hd7r8Awagw8e3qK/oLaWr3g==}
+  /zrender/5.3.0:
+    resolution: {integrity: sha512-Ln2QB5uqI1ftNYMtCRxd+XDq6MOttLgam2tmhKAVA+j0ko47UT+VNlDvKTkqe4K2sJhBvB0EhYNLebqlCTjatQ==}
+    dependencies:
+      tslib: 2.3.0
     dev: true
