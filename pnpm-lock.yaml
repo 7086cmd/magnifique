@@ -39,7 +39,7 @@ specifiers:
   echarts: 4.9.0
   electron: 17.0.0
   electron-builder: 22.14.5
-  electron-reloader: 1.2.1
+  electron-reloader: 1.2.2
   element-plus: 1.2.0-beta.6
   esbuild: 0.14.18
   esbuild-jest: 0.5.0
@@ -166,7 +166,7 @@ devDependencies:
   echarts: 4.9.0
   electron: 17.0.0
   electron-builder: 22.14.5
-  electron-reloader: 1.2.1
+  electron-reloader: 1.2.2
   element-plus: 1.2.0-beta.6_vue@3.2.29
   esbuild: 0.14.18
   esbuild-jest: 0.5.0_esbuild@0.14.18
@@ -5498,8 +5498,8 @@ packages:
       - supports-color
     dev: true
 
-  /electron-reloader/1.2.1:
-    resolution: {integrity: sha512-S7rcXXImlGXsEAGwB8tJ/nLrvAFzO95IS0Ux27A8XjRrDRFKj46O2aahaZ9D908FIj+BzywgNCofHQO5EhwioA==}
+  /electron-reloader/1.2.2:
+    resolution: {integrity: sha512-wbLqyU30mCRXEUwgfbjPjWtXjoygFqc8PofM5braxHUfg8q8uBHjFC2XYgAfoaJey/GzMOFVN39e/h7V8Q6TJg==}
     dependencies:
       chalk: 4.1.2
       chokidar: 3.5.3
