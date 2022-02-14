@@ -109,7 +109,7 @@
     "vite": "2.7.10",
     "vite-plugin-pwa": "0.11.13",
     "vite-plugin-style-import": "2.0.0",
-    "vitepress": "0.21.6",
+    "vitepress": "0.22.0",
     "vitest": "0.2.8",
     "vue": "3.2.31",
     "vue-eslint-parser": "8.2.0",
