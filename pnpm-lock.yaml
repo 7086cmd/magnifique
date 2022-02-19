@@ -36,7 +36,7 @@ specifiers:
   electron: 17.0.0
   electron-builder: 22.14.13
   electron-reloader: 1.2.2
-  element-plus: 2.0.1
+  element-plus: 2.0.2
   esbuild: 0.14.21
   esbuild-jest: 0.5.0
   eslint: 8.9.0
@@ -148,7 +148,7 @@ devDependencies:
   electron: 17.0.0
   electron-builder: 22.14.13
   electron-reloader: 1.2.2
-  element-plus: 2.0.1_vue@3.2.31
+  element-plus: 2.0.2_vue@3.2.31
   esbuild: 0.14.21
   esbuild-jest: 0.5.0_esbuild@0.14.21
   eslint: 8.9.0
@@ -5149,8 +5149,8 @@ packages:
       - supports-color
     dev: true
 
-  /element-plus/2.0.1_vue@3.2.31:
-    resolution: {integrity: sha512-Cdx3JhbMNGwVsU12DUewIltJ1hUYVSgx2iBB8AuNzzOxAqcxSA9e7p2lfNp8oCBQeh4ThRSaOkdLnJyO4mS3qQ==}
+  /element-plus/2.0.2_vue@3.2.31:
+    resolution: {integrity: sha512-URjC0HwwiqtlLxqTmHXQ31WXrdAq4ChWyyn52OcQs3PRsnMPfahGVq2AWnfzzlzlhVeI5lY3HQiuB1zDathS+g==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
@@ -5161,10 +5161,13 @@ packages:
       async-validator: 4.0.7
       dayjs: 1.10.7
       lodash: 4.17.21
+      lodash-es: 4.17.21
+      lodash-unified: 1.0.1_lodash-es@4.17.21+lodash@4.17.21
       memoize-one: 6.0.0
       normalize-wheel-es: 1.1.1
       vue: 3.2.31
     transitivePeerDependencies:
+      - '@types/lodash-es'
       - '@vue/composition-api'
     dev: true
 
@@ -8498,6 +8501,21 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       p-locate: 5.0.0
+    dev: true
+
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: true
+
+  /lodash-unified/1.0.1_lodash-es@4.17.21+lodash@4.17.21:
+    resolution: {integrity: sha512-Py+twfpWn+2dFQWCuGcp21WiQRwZwnm1cyE3piSt/VtBVKVyxlR58WgOVRzXtmdmDRGJKH8F8GPaA29WK/yK8g==}
+    peerDependencies:
+      '@types/lodash-es': '*'
+      lodash: '*'
+      lodash-es: '*'
+    dependencies:
+      lodash: 4.17.21
+      lodash-es: 4.17.21
     dev: true
 
   /lodash.assign/4.2.0:
