@@ -62,7 +62,7 @@ specifiers:
   particles.vue3: ^1.41.2
   particlesjs: ^2.2.3
   pinia: ^2.0.11
-  pnpm: 6.30.1
+  pnpm: 6.31.0
   prettier: 2.5.1
   pwa: ^1.9.7
   qs: ^6.10.3
@@ -161,7 +161,7 @@ devDependencies:
   less: 4.1.2
   less-loader: 10.2.0_less@4.1.2
   lodash: 4.17.21
-  pnpm: 6.30.1
+  pnpm: 6.31.0
   prettier: 2.5.1
   spectron: 19.0.0_electron@17.0.0
   ts-jest: 27.1.3_68259b5d5aad24b4b77e2a9725bd2263
@@ -9461,8 +9461,8 @@ packages:
       xmlbuilder: 9.0.7
     dev: true
 
-  /pnpm/6.30.1:
-    resolution: {integrity: sha512-vkhVrxj4tgDREV4feLovUx4PeKggcMi0jrs8lH88Cf+5wnWk6jAv9bTzIxVLTsQCIGDnj4+4rP+7zbYzs5HfPg==}
+  /pnpm/6.31.0:
+    resolution: {integrity: sha512-YUCyLI2J2wQsHWgcRYR8wUrTWsE0E8GX46XKtdXcUiE0GJJYi5saRy2Y8BMfLtlDHshHLs2U/KO1e5gsftJTFA==}
     engines: {node: '>=12.17'}
     hasBin: true
     dev: true
