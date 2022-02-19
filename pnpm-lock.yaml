@@ -26,7 +26,7 @@ specifiers:
   '@vue/compat': 3.2.31
   '@vue/runtime-dom': 3.2.31
   '@vue/shared': 3.2.31
-  axios: 0.24.0
+  axios: 0.26.0
   chalk: ^5.0.0
   chokidar: 3.5.3
   concurrently: 7.0.0
@@ -139,7 +139,7 @@ devDependencies:
   '@vue/compat': 3.2.31_vue@3.2.31
   '@vue/runtime-dom': 3.2.31
   '@vue/shared': 3.2.31
-  axios: 0.24.0
+  axios: 0.26.0
   chokidar: 3.5.3
   concurrently: 7.0.0
   cypress: 9.4.1
@@ -3456,8 +3456,8 @@ packages:
   /aws4/1.11.0:
     resolution: {integrity: sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==}
 
-  /axios/0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.26.0:
+    resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
     dependencies:
       follow-redirects: 1.14.9
     transitivePeerDependencies:
