@@ -76,7 +76,7 @@ specifiers:
   unplugin-auto-import: 0.5.11
   unplugin-vue-components: 0.17.18
   uuid: 8.3.2
-  vant: 3.4.4
+  vant: 3.4.5
   vite: 2.7.10
   vite-plugin-pwa: 0.11.13
   vite-plugin-style-import: 2.0.0
@@ -169,7 +169,7 @@ devDependencies:
   typescript: 4.5.5
   unplugin-auto-import: 0.5.11_esbuild@0.14.21+vite@2.7.10
   unplugin-vue-components: 0.17.18_78efb15faf9ed06d4a609310e1c0a736
-  vant: 3.4.4_vue@3.2.31
+  vant: 3.4.5_vue@3.2.31
   vite: 2.7.10_less@4.1.2
   vite-plugin-pwa: 0.11.13_vite@2.7.10
   vite-plugin-style-import: 2.0.0_vite@2.7.10
@@ -11703,8 +11703,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: false
 
-  /vant/3.4.4_vue@3.2.31:
-    resolution: {integrity: sha512-S6mf11uCad9jxCpgfO1IhGfJ7EDedcxanR8Ye1qihs3zaLlyuLLyazXi50wZDeRVzXCXIIBdBlsPkbOKajP6iw==}
+  /vant/3.4.5_vue@3.2.31:
+    resolution: {integrity: sha512-3an2v6ejW9pijKmaDbSCW7Hs1R45tqtTIcedfI8hEAA5zC2Bp8cXU6Z4gUCK6/RAGOJsB+vcyLINLb1cGS/SzQ==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
