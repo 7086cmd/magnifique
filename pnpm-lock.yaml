@@ -80,7 +80,7 @@ specifiers:
   vite: 2.7.10
   vite-plugin-pwa: 0.11.13
   vite-plugin-style-import: 2.0.0
-  vitepress: 0.21.6
+  vitepress: 0.22.2
   vitest: 0.2.8
   vue: 3.2.31
   vue-eslint-parser: 8.2.0
@@ -173,7 +173,7 @@ devDependencies:
   vite: 2.7.10_less@4.1.2
   vite-plugin-pwa: 0.11.13_vite@2.7.10
   vite-plugin-style-import: 2.0.0_vite@2.7.10
-  vitepress: 0.21.6_@types+react@17.0.39+less@4.1.2
+  vitepress: 0.22.2_@types+react@17.0.39+less@4.1.2
   vitest: 0.2.8_less@4.1.2
   vue: 3.2.31
   vue-eslint-parser: 8.2.0_eslint@8.9.0
@@ -11825,8 +11825,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitepress/0.21.6_@types+react@17.0.39+less@4.1.2:
-    resolution: {integrity: sha512-OzwD2cTfvoK5VKV0UWSqu4XvUOz4vWFJ4Bdi0z8GoVkTFXkfmbFawEDVXAZwzu0Hn4/VLopgmEyooc91iGKFlg==}
+  /vitepress/0.22.2_@types+react@17.0.39+less@4.1.2:
+    resolution: {integrity: sha512-L6ykQzBXKzLTSU3zZbILeF1TONO6juV/RrL0DsA9OayomVQjEOoFY7cVdKOpIBb3T5Jy/GAAVxcvWtU/XJ5k4g==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
