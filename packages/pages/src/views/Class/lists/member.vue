@@ -24,6 +24,7 @@ let departments = ref<
     value: string
   }[]
 >([])
+let considerations = ref<string[]>([])
 axios(`${baseurl}department/list`).then(response => {
   departments.value.push(...response.data.details)
 })
@@ -94,7 +95,7 @@ const createRegistry = async () => {
               </el-table-column>
               <el-table-column prop="name" label="姓名" />
               <el-table-column prop="number" label="学号" />
-              <el-table-column prop="in" label="所属部门" />
+              <el-table-column prop="do" label="职务" />
               <el-table-column align="right" fixed="right">
                 <template #header>
                   <el-button type="text" @click="isRegistingMember = true"> 注册成员 </el-button>
@@ -132,11 +133,18 @@ const createRegistry = async () => {
           <el-form-item label="荣获奖项">
             <el-input v-model="memberifo.union.regist.prize" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }"></el-input>
           </el-form-item>
+          <el-form-item label="声明">
+            <el-checkbox-group v-model="considerations">
+              <el-checkbox label="我愿意加入学生会/团总支，愿意为此做出努力。" /> <br />
+              <el-checkbox label="我愿意遵守学生会/团总支的纪律，积极履行责任，不滥用权力。" /> <br />
+              <el-checkbox label="我愿意通过自己的努力为学校做出奉献。" />
+            </el-checkbox-group>
+          </el-form-item>
         </el-form>
         <template #footer>
           <span>
             <el-button @click="isRegistingMember = false"> 取消 </el-button>
-            <el-button type="primary" :loading="isSubmiting" @click="createRegistry"> 确定 </el-button>
+            <el-button type="primary" :disabled="considerations.length !== 3" :loading="isSubmiting" @click="createRegistry"> 确定 </el-button>
           </span>
         </template>
       </el-dialog>

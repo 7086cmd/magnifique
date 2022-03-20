@@ -231,7 +231,7 @@ const createMember = async () => {
                 </el-table-column>
                 <el-table-column prop="name" label="姓名" />
                 <el-table-column prop="number" label="学号" />
-                <el-table-column prop="in" label="所属部门" />
+                <el-table-column prop="do" label="职务" />
                 <el-table-column align="right" fixed="right">
                   <template #header>
                     <el-input v-model="search" size="mini" placeholder="输入以搜索" />

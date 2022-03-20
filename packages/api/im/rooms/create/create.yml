@@ -1,0 +1,3 @@
+url: 'api/im/room/create'
+description: Create A Room
+data: { creator: string }

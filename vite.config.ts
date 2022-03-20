@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver, VantResolver } from 'unplugin-vue-components/resolvers'
 // import styleImport from 'vite-plugin-style-import'
 import lagacy from '@vitejs/plugin-legacy'
 import { VitePWA as pwa } from 'vite-plugin-pwa'
@@ -16,10 +16,10 @@ export default defineConfig({
     vue(),
     vueJsx(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(), VantResolver()],
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(), VantResolver()],
     }),
     // styleImport({
     //   libs: [
@@ -36,6 +36,11 @@ export default defineConfig({
     }),
     pwa({
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true,
+        /* other options */
+      },
       manifest: {
         name: 'Magnifique',
         short_name: 'Magn.',

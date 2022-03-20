@@ -1,3 +1,5 @@
+import { createYearTransformer } from '../../utils'
+
 export default (
   config:
     | {
@@ -18,6 +20,15 @@ export default (
   } else if (config.type === 'member') {
     return `member/${config.number}`
   } else if (config.type === 'class') {
-    return `class/${config.gradeid}/${config.classid}`
+    let gradeid = config.gradeid
+    if (![1, 2, 3].includes(config.gradeid)) {
+      const items = [1, 2, 3]
+      items.forEach(item => {
+        if (createYearTransformer(item) === config.gradeid) {
+          gradeid = item
+        }
+      })
+    }
+    return `class/${gradeid}/${config.classid}`
   }
 }

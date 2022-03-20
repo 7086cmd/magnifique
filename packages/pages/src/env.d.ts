@@ -36,3 +36,12 @@ declare type status1 =
       reason: string
       text: string
     }
+
+declare module '@kangc/v-md-editor'
+declare module '@kangc/v-md-editor/lib/theme/*'
+declare module '@kangc/v-md-editor/lib/plugins/*'
+declare module '@kangc/v-md-editor/lib/preview'
+declare module 'markdown-it-mark'
+declare module 'markdown-it-mathtex'
+declare module 'markdown-it-sub'
+declare module 'markdown-it-sup'

@@ -41,6 +41,7 @@ import * as volunteerActions from './modules/powers/volunteer'
 import * as utils from './modules/utils'
 import getEmailConfig from './modules/database/get-email-config'
 import getOrigin from './modules/database/get-origin'
+import createIndex from './modules/im/utils/create-index'
 
 // Generate Chart Base File
 const chartBase = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="shortcut icon" href="https://v-charts.js.org/favicon.ico" type="image/x-icon" /><title>Chart (type: <%=tit=>)</title><script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script><script src="https://cdn.jsdelivr.net/npm/echarts@4/dist/echarts.min.js"></script><script src="https://cdn.jsdelivr.net/npm/v-charts/lib/index.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/v-charts/lib/style.min.css" /></head><body><div id="app"><ve-<%=tpe=> :data="cdata"></ve-<%=tpe=>></div><script>var vm=new Vue({el:'#app',data(){const data=JSON.parse('<%=dat=>');return {cdata:data}}})</script></body></html>`
@@ -89,7 +90,7 @@ const downloaderSecureServer = createHttpsServer(
   downloaderServer.callback()
 )
 const downloaderUnSecureServer = createHttpServer(downloaderServer.callback())
-const io = new Server(httpsServer, {
+const io = new Server(httpServer, {
   cors: {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
@@ -1188,13 +1189,19 @@ router.post('/api/member/admin/:id/del/deduction', async ctx => {
     if (loginMember(parseInt(id), password).status == 'ok') {
       if (memberActions.memberAdminLimitCheckPower(ctx.params.id, 'deduction')) {
         ctx.response.body = deductionActions.deleteDeduction(parseInt(ctx.request.body.person), ctx.request.body.id)
-        io.emit(
-          'del-deduc',
-          JSON.stringify({
-            person: ctx.request.body.person,
-            id: ctx.request.body.id,
-          })
-        )
+        io.emit('deduction', {
+          sendTo: [
+            'member/' + ctx.request.body.person,
+            createIndex({
+              ...utils.createPersonNumberAnalyzor(Number(ctx.request.body.person)),
+              type: 'class',
+            }),
+          ],
+          content: ctx.request.body.person + '的一个扣分被删除',
+          id: ctx.request.body.id,
+          type: 'deduction',
+          action: 'delete',
+        })
       } else {
         ctx.response.body = {
           status: 'error',
@@ -1250,7 +1257,19 @@ router.post('/api/member/deduction/:id/work/new/deduction', async ctx => {
     if (loginMember(parseInt(id), password).status == 'ok') {
       if (memberActions.memberDutyLimitCheckPower(ctx.params.id, 'deduction')) {
         ctx.response.body = deductionActions.createDeduction(content)
-        io.emit('new-deduc', JSON.stringify(content))
+        io.emit('deduction', {
+          sendTo: [
+            'member/' + ctx.request.body.person,
+            createIndex({
+              ...utils.createPersonNumberAnalyzor(Number(ctx.request.body.person)),
+              type: 'class',
+            }),
+          ],
+          content: ctx.request.body.person + '被扣分',
+          id: ctx.request.body.id,
+          type: 'deduction',
+          action: 'create',
+        })
       } else {
         ctx.response.body = {
           status: 'error',
@@ -1278,7 +1297,19 @@ router.post('/api/member/deduction/:id/work/turnd/deduction', async ctx => {
     if (loginMember(parseInt(number), password).status == 'ok') {
       if (memberActions.memberDutyLimitCheckPower(ctx.params.id, 'deduction')) {
         ctx.response.body = deductionActions.refuseCallback(person, id, reason)
-        io.emit('turnd-deduc', JSON.stringify({ person, id, reason }))
+        io.emit('deduction', {
+          sendTo: [
+            'member/' + ctx.request.body.person,
+            createIndex({
+              ...utils.createPersonNumberAnalyzor(Number(ctx.request.body.person)),
+              type: 'class',
+            }),
+          ],
+          content: ctx.request.body.person + '的一个扣分被驳回',
+          id: ctx.request.body.id,
+          type: 'deduction',
+          action: 'update',
+        })
       } else {
         ctx.response.body = {
           status: 'error',
@@ -1306,7 +1337,19 @@ router.post('/api/member/deduction/:id/work/del/deduction', async ctx => {
     if (loginMember(parseInt(number), password).status == 'ok') {
       if (memberActions.memberDutyLimitCheckPower(ctx.params.id, 'deduction')) {
         ctx.response.body = deductionActions.deleteDeduction(person, id)
-        io.emit('del-deduc', JSON.stringify({ person, id }))
+        io.emit('deduction', {
+          sendTo: [
+            'member/' + ctx.request.body.person,
+            createIndex({
+              ...utils.createPersonNumberAnalyzor(Number(ctx.request.body.person)),
+              type: 'class',
+            }),
+          ],
+          content: ctx.request.body.person + '的一个扣分被删除',
+          id: ctx.request.body.id,
+          type: 'deduction',
+          action: 'delete',
+        })
       } else {
         ctx.response.body = {
           status: 'error',
@@ -1831,13 +1874,19 @@ router.post('/api/admin/del/deduction', async ctx => {
     const { password } = ctx.request.body
     if (loginAdmin(password).status == 'ok') {
       ctx.response.body = deductionActions.deleteDeduction(parseInt(ctx.request.body.person), ctx.request.body.id)
-      io.emit(
-        'del-deduc',
-        JSON.stringify({
-          person: ctx.request.body.person,
-          id: ctx.request.body.id,
-        })
-      )
+      io.emit('deduction', {
+        sendTo: [
+          'member/' + ctx.request.body.person,
+          createIndex({
+            ...utils.createPersonNumberAnalyzor(Number(ctx.request.body.person)),
+            type: 'class',
+          }),
+        ],
+        content: ctx.request.body.person + '的一个扣分被删除',
+        id: ctx.request.body.id,
+        type: 'deduction',
+        action: 'delete',
+      })
     } else {
       ctx.response.body = {
         status: 'error',
@@ -2184,10 +2233,11 @@ io.on('connection', socket => {
   // ...
   let query
   if (socket.handshake.query.type == 'class') {
-    query = `class/${utils.createYearTransformer(<number>(<unknown>socket.handshake.query.gradeid))} / ${<number>(<unknown>socket.handshake.query.classid)}`
+    query = `class/${Number(socket.handshake.query.gradeid)} / ${Number(socket.handshake.query.classid)}`
   } else {
     query = 'admin'
   }
+  // console.log(query)
   socket.to(query).emit('quit-app')
   socket.join(query)
   socket.emit('connect-successfully')

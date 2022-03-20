@@ -14,7 +14,7 @@ const getGlob = () => [...glob.sync('packages/**/*.*')]
 const __dirname = resolve()
 const packageFile = JSON.parse(readFileSync(resolve(__dirname, './package.json')).toString())
 packageFile.main = 'dist/main.js'
-writeFileSync(resolve(__dirname, './package.json'), JSON.stringify(packageFile, null, 4))
+writeFileSync(resolve(__dirname, './package.json'), JSON.stringify(packageFile, null, 2))
 
 platform === 'win32' && exec('taskkill /f /im electron.exe')
 
