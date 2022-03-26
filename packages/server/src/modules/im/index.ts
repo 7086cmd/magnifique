@@ -1,4 +1,4 @@
-import * as roomActions from './rooms'
+import * as roomActions from './rooms
 import * as messageActions from './messages'
 import { loginModule } from './auth'
 export * from './rooms'

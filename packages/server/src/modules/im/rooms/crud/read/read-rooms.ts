@@ -17,7 +17,6 @@ const getRecent = (messageFile: MessageFile) => {
     // return `${recentItem.creator}: ${recentItem.}`
   }
 }
-
 const readMyRooms = (user: string) => {
   // createPath(user)
   const location = createRoomLocation(user)

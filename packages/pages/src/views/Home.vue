@@ -27,16 +27,6 @@ if (!supportment) {
     type: 'warning',
   })
 }
-
-const txt = `
-# Hello, World!
-
-:::tip
-WARNING
-:::
-
-:greeting:
-`
 </script>
 
 <template>
@@ -48,12 +38,6 @@ WARNING
       <el-container>
         <el-aside width="30%"></el-aside>
         <el-main style="padding-top: 15%">
-          <!-- <v-md-editor
-            v-model="txt"
-            height="400px"
-            style="text-align: left"
-            left-toolbar="undo redo clear | h bold italic emoji strikethrough quote tip | ul ol table hr todo-list | link image code | save"
-          ></v-md-editor> -->
           <el-card shadow="never">
             <el-tabs v-model="choice">
               <el-tab-pane name="class" label="班级登录">
