@@ -19,7 +19,7 @@ const { password, number } = JSON.parse(window.atob(String(sessionStorage.getIte
 let aboutme = ref<member>(personExample())
 
 const information: member = reactive(personExample())
-axios(`${baseurl}member/getinfo/${number}/raw`).then((response) => {
+axios(`${baseurl}member/getinfo/${number}/raw`).then(response => {
   aboutme.value = response.data.details as member
   refresh()
   information.union.department = aboutme.value.union.department
@@ -51,10 +51,10 @@ let vadmins = ref<
 let search = ref('')
 let table = ref([])
 let loading = ref(false)
-axios(`${baseurl}department/list`).then((response) => {
+axios(`${baseurl}department/list`).then(response => {
   departments.value.push(...response.data.details)
 })
-axios(`${baseurl}power/list`).then((response) => {
+axios(`${baseurl}power/list`).then(response => {
   vadmins.value.push(...response.data.details)
 })
 const startToTrue = (number: number) => {
@@ -68,7 +68,7 @@ async function refresh() {
       password,
     },
     method: 'get',
-  }).then((response) => {
+  }).then(response => {
     loading.value = false
     if (response.data.status === 'ok') {
       table.value = response.data.details
@@ -126,7 +126,7 @@ const toTrueIt = () => {
       number,
     },
     method: 'post',
-  }).then((response) => {
+  }).then(response => {
     if (response.data.status === 'ok') {
       sucfuc()
     } else {
@@ -179,7 +179,6 @@ const createMember = async () => {
 
 <template>
   <div>
-    <h4>成员管理</h4>
     <el-skeleton :loading="loading" animated :rows="10" :throttle="500">
       <template #default>
         <el-card shadow="never">
@@ -250,7 +249,7 @@ const createMember = async () => {
       <template #footer>
         <span>
           <el-button @click="isRegistingMember = false"> 取消 </el-button>
-          <el-button color="#626aef" style="color: white" :loading="isSubmiting" @click="createMember"> 确定 </el-button>
+          <el-button type="primary" :loading="isSubmiting" @click="createMember"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -268,7 +267,7 @@ const createMember = async () => {
       <template #footer>
         <span>
           <el-button @click="toTrueDialog = false"> 取消 </el-button>
-          <el-button color="#626aef" style="color: white" :loading="isFulling" @click="toTrueIt()"> 确定 </el-button>
+          <el-button type="primary" :loading="isFulling" @click="toTrueIt()"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>

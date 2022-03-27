@@ -5,12 +5,27 @@ import MemberLogin from './Member/Login.vue'
 import ClassLogin from './Class/ClassLogin.vue'
 import { useRouter } from 'vue-router'
 import AdminLogin from './Admin/Login.vue'
+import { useWebNotification } from '@vueuse/core'
+import { ElMessageBox } from 'element-plus'
 
 const router = useRouter()
 const choice = ref('class')
 
 const toTag = (tag: string) => {
   router.push('/' + tag + '/')
+}
+
+const supportment = useWebNotification({
+  title: '欢迎使用Magnifique',
+  dir: 'auto',
+  lang: 'zh-cn',
+}).isSupported
+
+if (!supportment) {
+  ElMessageBox.alert('请开启通知', '未开启通知', {
+    center: true,
+    type: 'warning',
+  })
 }
 </script>
 
@@ -23,7 +38,12 @@ const toTag = (tag: string) => {
       <el-container>
         <el-aside width="30%"></el-aside>
         <el-main style="padding-top: 15%">
-          <Particles id="tsparticles" />
+          <!-- <v-md-editor
+            v-model="txt"
+            height="400px"
+            style="text-align: left"
+            left-toolbar="undo redo clear | h bold italic emoji strikethrough quote tip | ul ol table hr todo-list | link image code | save"
+          ></v-md-editor> -->
           <el-card shadow="never">
             <el-tabs v-model="choice">
               <el-tab-pane name="class" label="班级登录">

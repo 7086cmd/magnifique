@@ -5,6 +5,6 @@ const objectToArray = (insert: string, content: object) => {
     val[insert] = key
     base.push(val)
   }
-  return base
+  return base as unknown
 }
 export default objectToArray

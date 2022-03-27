@@ -37,10 +37,10 @@ const doit = (content: object) => {
   return (
     JSON.stringify(content)
       .split('[')
-      .filter((word) => word != '')
+      .filter(word => word != '')
       .join('[')
       .split(']')
-      .filter((word) => word != '')
+      .filter(word => word != '')
       .join(']') + '\r\n'
   )
 }

@@ -3,10 +3,10 @@ export default () => {
   return (
     JSON.stringify(elements)
       .split('[')
-      .filter((x) => x !== '')
+      .filter(x => x !== '')
       .join('[')
       .split(']')
-      .filter((x) => x !== '')
+      .filter(x => x !== '')
       .join(']') + '\n'
   )
 }

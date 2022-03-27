@@ -32,7 +32,12 @@ export default (
     } as post
     if (existsSync(createMemberIndex(numb))) {
       const memberdetail = getSingleMemberAsRaw(numb).details as member
-      memberdetail.post.details[id] = {
+
+      ;(
+        memberdetail.post as {
+          details: Record<string, post>
+        }
+      ).details[id] = {
         ...config,
         person: numb,
         time: dayjs().toJSON(),

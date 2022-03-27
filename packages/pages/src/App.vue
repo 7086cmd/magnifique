@@ -1,10 +1,27 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
+import { useTitle, useNetwork, useBroadcastChannel } from '@vueuse/core'
+import { watch } from 'vue'
+const title = useTitle()
+title.value = 'Magnifique'
+const online = useNetwork().isOnline
+const { isSupported, data, post } = useBroadcastChannel({
+  name: 'magnifique-window-controller',
+})
 
-const { t } = useI18n()
-document.title = t('title')
+if (isSupported) {
+  watch(data, () => {
+    if (data.value === 'connected') {
+      window.close()
+    }
+  })
+
+  post('connected')
+}
 </script>
 
 <template>
-  <router-view></router-view>
+  <div>
+    <el-alert v-if="!online" title="连接已断开" description="请检查网络连接" type="error" center show-icon />
+    <router-view></router-view>
+  </div>
 </template>

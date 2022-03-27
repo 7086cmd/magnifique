@@ -1,7 +1,7 @@
 import { tmpdir } from 'os'
 import { readdirSync } from 'fs'
 import { resolve } from 'path'
-import { createObjectToArrayTransformer, createSdbdataParser, createYearTransformer } from '../../../..//utils'
+import { createObjectToArrayTransformer, createSdbdataParser, createYearTransformer } from '../../../../utils'
 
 export default (gradeid: number, classid: number) => {
   if ([1, 2, 3].includes(gradeid)) {

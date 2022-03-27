@@ -15,10 +15,6 @@ export default () => {
       total: 0,
       details: {},
     },
-    radio: {
-      total: 0,
-      details: {},
-    },
     workflow: {
       total: 0,
       details: {},

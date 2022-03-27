@@ -2,7 +2,7 @@ import { tmpdir } from 'os'
 import { existsSync } from 'fs'
 import { resolve } from 'path'
 import { v4 } from 'uuid'
-import { getSingleMemberAsRaw, createNewAction } from '../../../member'
+import { getSingleMemberAsRaw } from '../../../member'
 import { createSdbdataSaver, createMemberIndex, createSdbdataParser, createPersonNumberAnalyzor } from '../../../../utils'
 
 // varible: deduction data.
@@ -18,7 +18,6 @@ export default (de_data: deduction) => {
         uuid = v4()
       }
       decoded.details[uuid] = de_data
-      createNewAction(de_data.deductor.number, 1)
       if (existsSync(createMemberIndex(de_data.person))) {
         const persondetail = getSingleMemberAsRaw(de_data.person).details as member
         persondetail.deduction.details[uuid] = de_data

@@ -30,8 +30,16 @@ const generateAdminFolder = (basep: string) => {
   return tpth
 }
 
+const generateIMRoomsFolder = (basep: string) => {
+  const tpth = resolve(basep, './im_rooms/')
+  if (!existsSync(tpth)) {
+    mkdirSync(tpth)
+  }
+  return tpth
+}
+
 const generateFeedbackFolder = (basep: string) => {
-  const tpth = resolve(basep, './feedback/')
+  const tpth = resolve(basep, './feedbacks/')
   if (!existsSync(tpth)) {
     mkdirSync(tpth)
   }
@@ -88,12 +96,10 @@ export default () => {
       generateClassMemberFolder(bsec)
       generateClassDetail(bsec, 'deduction')
       generateClassDetail(bsec, 'post')
-      generateClassDetail(bsec, 'activity')
-      generateClassDetail(bsec, 'orgnize')
-      generateClassDetail(bsec, 'radio')
       generateClassDetail(bsec, 'volunteer')
     }
   }
   generateAdminPassword(generateAdminFolder(rt))
+  generateIMRoomsFolder(rt)
   generateFeedbackFolder(rt)
 }

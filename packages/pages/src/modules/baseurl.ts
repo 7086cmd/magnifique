@@ -1,1 +1,1 @@
-export default import.meta.env.DEV ? `https://localhost/api/` : `/api/`
+export default import.meta.env.DEV ? `http://localhost/api/` : `/api/`

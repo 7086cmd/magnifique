@@ -28,11 +28,11 @@ const panels = [
 let link = ref(``)
 
 const generateLink = () => {
-  axios(`${baseurl}class/graph/${gradeid}/${classid}/${dayjs(during.value[0]).toJSON()}/${dayjs(during.value[1]).toJSON()}/${graph.value}/${type.value}?password=${password}`).then((response) => {
+  axios(`${baseurl}class/graph/${gradeid}/${classid}/${dayjs(during.value[0]).toJSON()}/${dayjs(during.value[1]).toJSON()}/${graph.value}/${type.value}?password=${password}`).then(response => {
     if (response.data.status === 'error') {
       failfuc(response.data.reason, response.data.text)
     } else {
-      axios(`${baseurl}class/graph/ring/${response.data.details.token}`).then((html) => {
+      axios(`${baseurl}class/graph/ring/${response.data.details.token}`).then(html => {
         link.value = html.data
       })
     }

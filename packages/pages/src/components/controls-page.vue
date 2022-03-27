@@ -159,7 +159,7 @@ const openPassword = () => {
         </el-form-item>
         <el-form-item>
           <el-button plain @click="reset_password = false"> 取消 </el-button>
-          <el-button color="#626aef" style="color: white" plain :loading="isSubmitingPassword" @click="npd"> 确定 </el-button>
+          <el-button type="primary" plain :loading="isSubmitingPassword" @click="npd"> 确定 </el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -174,7 +174,7 @@ const openPassword = () => {
         </el-form-item>
         <el-form-item>
           <el-button plain @click="feedbackdialogOpen = false">取消</el-button>
-          <el-button color="#626aef" style="color: white" plain :loading="isSubmitingFeedBack" @click="fbsub">确定</el-button>
+          <el-button type="primary" plain :loading="isSubmitingFeedBack" @click="fbsub">确定</el-button>
         </el-form-item>
       </el-form>
     </el-drawer>

@@ -29,7 +29,7 @@ axios({
     password: password,
   },
   method: 'get',
-}).then((response) => {
+}).then(response => {
   if (response.data.status !== 'ok') {
     localStorage.removeItem('adminLoginInfo')
     router.push('/admin/login')

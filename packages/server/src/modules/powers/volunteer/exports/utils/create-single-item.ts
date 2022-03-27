@@ -14,10 +14,10 @@ export default (
   return (
     JSON.stringify(data)
       .split('[')
-      .filter((x) => x !== '')
+      .filter(x => x !== '')
       .join('[')
       .split(']')
-      .filter((x) => x !== '')
+      .filter(x => x !== '')
       .join(']') + '\n'
   )
 }

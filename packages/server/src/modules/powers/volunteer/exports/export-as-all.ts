@@ -10,7 +10,7 @@ export default (config?: { start: string; end: string }) => {
     `结束日期： ${config === undefined ? '全部记录' : dayjs(config.end).format('YYYY-MM-DD')}\n` +
     exportOverview()
   const membersInClass = getAllAsRaw().details
-  membersInClass.forEach((item) => {
+  membersInClass.forEach(item => {
     csv += createSingleItem(item.number, config)
   })
   return csv

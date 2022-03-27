@@ -30,7 +30,7 @@ watch(number, () => {
   if (number.value.split('').length === 8) {
     axios({
       url: `${baseurl}member/getinfo/${number.value}/`,
-    }).then((response) => {
+    }).then(response => {
       const data = response.data.details as member_processed
       name.value = data.name
       duty.value = data.do
@@ -53,7 +53,7 @@ const login = () => {
     getData(`${baseurl}member/${number.value}/login`, 'get', {
       password: window.btoa(password.value),
     })
-    axios(`${baseurl}member/${number.value}/login?password=${window.btoa(password.value)}`).then((response) => {
+    axios(`${baseurl}member/${number.value}/login?password=${window.btoa(password.value)}`).then(response => {
       if (response.data.status == 'ok') {
         ElMessageBox.alert(`${name.value}，欢迎使用。`, '登陆成功', {
           type: 'success',
@@ -88,14 +88,11 @@ const login = () => {
     <el-form-item label="姓名">
       <el-input v-model="name" readonly />
     </el-form-item>
-    <el-form-item label="职位">
-      <el-input v-model="duty" readonly />
-    </el-form-item>
     <el-form-item label="密码">
       <el-input v-model="password" type="password" />
     </el-form-item>
     <el-form-item>
-      <el-button color="#626aef" style="color: white; width: 100%" plain @click="login"> 确定 </el-button>
+      <el-button type="primary" style="width: 100%" plain @click="login"> 确定 </el-button>
     </el-form-item>
   </el-form>
 </template>

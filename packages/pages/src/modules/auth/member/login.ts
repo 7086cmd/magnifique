@@ -8,7 +8,7 @@ const login = async (number: number, passwordEncoded: string, router: Router) =>
     data: {
       password: passwordEncoded,
     },
-  }).then((response) => {
+  }).then(response => {
     if (response.data.details == 'ok') {
       ElMessageBox.alert('成功登录', '成功', {
         center: true,

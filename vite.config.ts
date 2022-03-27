@@ -3,21 +3,23 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver, VantResolver } from 'unplugin-vue-components/resolvers'
 // import styleImport from 'vite-plugin-style-import'
 import lagacy from '@vitejs/plugin-legacy'
 import { VitePWA as pwa } from 'vite-plugin-pwa'
 import { resolve } from 'path'
+import prismjs from 'vite-plugin-prismjs'
+import monacoEditor from 'vite-plugin-monaco-editor'
 
 export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(), VantResolver()],
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(), VantResolver()],
     }),
     // styleImport({
     //   libs: [
@@ -34,6 +36,11 @@ export default defineConfig({
     }),
     pwa({
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true,
+        /* other options */
+      },
       manifest: {
         name: 'Magnifique',
         short_name: 'Magn.',
@@ -59,10 +66,20 @@ export default defineConfig({
         ],
       },
     }),
+    prismjs({
+      languages: ['javascript', 'css', 'cpp', 'c', 'html', 'typescript', 'java', 'rust', 'go', 'python', 'json', 'yaml', 'graphql', 'markdown'],
+      plugins: ['line-numbers', 'copy-to-clipboard'],
+      theme: 'default',
+      css: true,
+    }),
+    monacoEditor(),
   ],
   server: {
     fs: {
       strict: false,
+    },
+    proxy: {
+      '/api': 'http://locahost/api',
     },
   },
   build: {
@@ -79,7 +96,7 @@ export default defineConfig({
         {
           postcssPlugin: 'internal:charset-removal',
           AtRule: {
-            charset: (atRule) => {
+            charset: atRule => {
               if (atRule.name === 'charset') {
                 atRule.remove()
               }

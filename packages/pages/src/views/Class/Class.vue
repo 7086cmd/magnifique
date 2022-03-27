@@ -30,7 +30,7 @@ if (localStorage.getItem('classLoginInfo') == undefined || localStorage.getItem(
 
 const { gradeid, classid, password } = JSON.parse(window.atob(String(localStorage.getItem('classLoginInfo'))))
 
-axios(`${baseurl}class/${gradeid}/${classid}/login?password=${password}`).then((response) => {
+axios(`${baseurl}class/${gradeid}/${classid}/login?password=${password}`).then(response => {
   if (response.data.status !== 'ok') {
     localStorage.removeItem('classLoginInfo')
     router.push('/')

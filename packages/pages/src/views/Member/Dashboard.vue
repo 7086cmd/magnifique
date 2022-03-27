@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { ElLoading } from 'element-plus'
+import NProgress from 'nprogress'
 import axios from 'axios'
 import baseurl from '../../modules/baseurl'
 import MemberDescription from '../../components/lists/MemberDescription.vue'
 
-const loader = ElLoading.service({
-  text: '正在获取数据...',
-})
+NProgress.start()
 
 const { number } = JSON.parse(window.atob(String(sessionStorage.getItem('memberLoginInfo'))))
 const name = ref('')
@@ -20,7 +18,7 @@ let whatdo = ref('')
 let aboutme = ref({})
 let loaded = ref(false)
 
-axios(`${baseurl}member/getinfo/${number}/`).then((response) => {
+axios(`${baseurl}member/getinfo/${number}/`).then(response => {
   aboutme.value = response.data.details
   loaded.value = true
   name.value = response.data.details.name
@@ -29,7 +27,7 @@ axios(`${baseurl}member/getinfo/${number}/`).then((response) => {
   violation.value = response.data.details.record.violation
   department.value = response.data.details.in
   whatdo.value = response.data.details.do
-  loader.close()
+  NProgress.done()
   let itv = setInterval(() => {
     score.value++
     if (score.value >= 80) {

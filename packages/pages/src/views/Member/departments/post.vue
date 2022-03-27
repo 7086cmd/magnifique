@@ -8,8 +8,9 @@ import baseurl from '../../../modules/baseurl'
 import example from '../../../../examples/post'
 import failfuc from '../../../modules/failfuc'
 import sucfuc from '../../../modules/sucfuc'
-import postDescription from '../../../components/lists/postDescription.vue'
+import postDescription from '../../../components/lists/PostDescription.vue'
 import dayjs from 'dayjs'
+import toPort from '../../../modules/to-port'
 
 const { number, password } = JSON.parse(window.atob(String(sessionStorage.getItem('memberLoginInfo'))))
 
@@ -76,7 +77,7 @@ const download = async (props: { row: PostList }) => {
     },
   })
   if (response.data.status === 'ok') {
-    window.open(`${baseurl}member/post/download/${response.data.details.token}/${props.row.title}.docx`)
+    window.open(toPort(`${baseurl}member/post/download/${response.data.details.token}/${props.row.title}.docx`))
   } else {
     failfuc(response.data.reason, response.data.text)
   }
@@ -174,7 +175,7 @@ const submitpost = async () => {
       <template #footer>
         <span>
           <el-button @click="newpost = false"> 取消 </el-button>
-          <el-button color="#626aef" style="color: white" :loading="isCreating" @click="submitpost"> 确定 </el-button>
+          <el-button type="primary" :loading="isCreating" @click="submitpost"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>

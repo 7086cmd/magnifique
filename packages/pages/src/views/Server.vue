@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
 import { ref, Ref } from 'vue'
 import controls from '../components/controls.vue'
+import { useWebNotification } from '@vueuse/core'
 const router = useRouter()
 const networks: Ref<any[]> = ref([])
 try {
@@ -22,6 +23,11 @@ try {
   })
   router.push('/')
 }
+useWebNotification({
+  title: '服务器运行成功',
+  dir: 'auto',
+  lang: 'zh-cn',
+}).show()
 </script>
 
 <template>

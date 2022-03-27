@@ -7,7 +7,7 @@ export default (link: string, method: 'post' | 'get', data: object) => {
     axios({
       url: link + '?' + params,
       method,
-    }).then((response) => {
+    }).then(response => {
       if (response.data.status == 'error') {
         if (response.data.reason === 'type-error') {
           throw response.data.text

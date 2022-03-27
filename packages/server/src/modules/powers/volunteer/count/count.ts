@@ -13,7 +13,7 @@ export default (
 ) => {
   const vol = getOwn(memberNumber).details
   let t = 0
-  vol.forEach((item) => {
+  vol.forEach(item => {
     if (config === undefined) {
       if (item.status === 'done') {
         t = (t * 10 + item.duration * 10) / 10

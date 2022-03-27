@@ -1,4 +1,4 @@
-import { v1 } from 'uuid'
+import { v4, validate } from 'uuid'
 import create from './create'
 
 interface VolunteerMultiMiddle {
@@ -11,13 +11,14 @@ interface VolunteerMultiMiddle {
 }
 
 export default (Data: VolunteerMulti) => {
-  Data.createId = v1()
-  let data = Object.assign({}, Data)
-  delete data.person
-  Data.person.forEach((item) => {
+  // Data.createId = v1()
+  if (!validate(Data.createId)) {
+    Data.createId = v4()
+  }
+  Data.person.forEach(item => {
     const volunteerForPerson = {
-      person: item,
-      ...(data as VolunteerMultiMiddle),
+      ...(Data as VolunteerMultiMiddle),
+      person: Number(item),
     } as volunteer
     create(item, volunteerForPerson)
   })

@@ -10,10 +10,10 @@ const doit = (content: object) => {
   return (
     JSON.stringify(content)
       .split('[')
-      .filter((word) => word != '')
+      .filter(word => word != '')
       .join('[')
       .split(']')
-      .filter((word) => word != '')
+      .filter(word => word != '')
       .join(']') + '\r\n'
   )
 }
@@ -27,7 +27,7 @@ export default (config: { start: string; end: string }) => {
     for (let j = 1; j <= 15; j++) {
       let deductiont = 0
       const classList = getClass(createYearTransformer(i), j).details
-      classList.forEach((item) => {
+      classList.forEach(item => {
         if (dayjs(item.time).isBetween(dayjs(config.start), dayjs(config.end))) {
           let t = Math.floor(deductiont * 100)
           t += Math.floor(item.deduction * 100)

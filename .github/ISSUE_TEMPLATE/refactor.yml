@@ -1,0 +1,65 @@
+name: New refactions
+description: Build a refactor.
+title: '[Refactors]: '
+labels: ['refactor']
+body:
+  - type: checkboxes
+    attributes:
+      label: Pre-report considerations
+      description: Please be prepared to let us know the cause of the bug
+      options:
+        - label: I have read the [Contributing Guidelines](https://github.com/7086cmd/magnifique/blob/main/CONTRIBUTING.md) for this project.
+          required: true
+        - label: I agree to follow the [Code of Conduct](https://github.com/7086cmd/magnifique/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.
+          required: true
+        - label: I have searched the [issue tracker](https://www.github.com/7086cmd/magnifique/issues) for a bug report that matches the one I want to file, without success.
+          required: true
+  - type: dropdown
+    id: place
+    attributes:
+      label: Refact Location
+      description: Where you should refact
+      options:
+        - Front End
+        - Back End
+        - App
+  - type: dropdown
+    id: front_ref
+    attributes:
+      label: If you will refact Front End, what will you refact?
+      options:
+        - Class
+        - Member
+        - Admin
+        - I won't refact fe.
+  - type: dropdown
+    id: back_ref
+    attributes:
+      label: If you will refact Back End, what will you refact?
+      options:
+        - Class API
+        - Member API
+        - Admin API
+        - I won't refact be.
+  - type: dropdown
+    id: app_ref
+    attributes:
+      label: If you will refact App, what will you refact?
+      options:
+        - Server
+        - Client
+        - I won't refact app.
+  - type: textarea
+    attributes:
+      label: Why do you want to refact this?
+  - type: textarea
+    attributes:
+      label: Excepted Behavior
+  - type: textarea
+    attributes:
+      label: The file which is waiting for refact?
+  - type: input
+    attributes:
+      label: Contact Details
+      description: How can we contact you?
+      placeholder: ex. email@example.com

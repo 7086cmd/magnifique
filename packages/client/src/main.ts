@@ -40,7 +40,7 @@ app.whenReady().then(() => {
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })
-  mainWindow.loadURL(process.env.NODE_ENV == 'development' ? 'http://localhost:3000/' : 'http://10.49.8.4/')
+  mainWindow.loadURL(process.env.NODE_ENV == 'development' ? 'http://localhost:3000/' : 'https://xxxxxxxxx/')
   process.env.NODE_ENV == 'development' && mainWindow.webContents.openDevTools()
   tray.setContextMenu(
     Menu.buildFromTemplate([
@@ -123,7 +123,7 @@ app.whenReady().then(() => {
     mainWindow.webContents.send('reload-page')
     mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize()
   })
-  mainWindow.on('close', (event) => {
+  mainWindow.on('close', event => {
     mainWindow.hide()
     event.preventDefault()
   })

@@ -1,13 +1,13 @@
 #app {
   /* -webkit-font-smoothing: antialiased; */
   /* -moz-osx-font-smoothing: grayscale; */
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
-  --el-color-primary: #626aef;
+  /* --el-color-primary: #626aef; */
 }
-.el-button--primary {
-  color: #626aef;
-}
+/* .el-button--primary { */
+/* color: #626aef; */
+/* } */
 /* ::-webkit-scrollbar {
     display: none;
 } */
@@ -38,6 +38,6 @@ h4 {
   padding-right: 5%;
 }
 
-:root {
-  --el-color-primary: #626aef;
-}
+/* :root { */
+/* --el-color-primary: #626aef; */
+/* } */

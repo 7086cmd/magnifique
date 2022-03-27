@@ -3,17 +3,16 @@
 import { ref, reactive, watch } from 'vue'
 import axios from 'axios'
 import { Refresh } from '@element-plus/icons-vue'
-import { ElMessageBox, ElLoading } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
 import baseurl from '../../modules/baseurl'
 import personExample from '../../../examples/person'
 import sucfuc from '../../modules/sucfuc'
 import failfuc from '../../modules/failfuc'
 import MemberDescription from '../../components/lists/MemberDescription.vue'
 import positions from './positions'
+import nProgress from 'nprogress'
 
-let runner = ElLoading.service({
-  text: '获取信息中...',
-})
+nProgress.start()
 
 const { password } = JSON.parse(window.atob(String(localStorage.getItem('adminLoginInfo'))))
 let isRegistingMember = ref(false)
@@ -56,11 +55,11 @@ const panes = ref<
     value: 'core',
   },
 ])
-axios(`${baseurl}department/list`).then((response) => {
+axios(`${baseurl}department/list`).then(response => {
   departments.value.push(...response.data.details)
   panes.value.push(...response.data.details)
 })
-axios(`${baseurl}power/list`).then((response) => {
+axios(`${baseurl}power/list`).then(response => {
   vadmins.value.push(...response.data.details)
 })
 const startToTrue = (number: number) => {
@@ -68,9 +67,7 @@ const startToTrue = (number: number) => {
   toTrueNumber.value = number
 }
 const refresh = async (type: string) => {
-  runner = ElLoading.service({
-    text: '获取信息中...',
-  })
+  nProgress.start()
   loading.value = true
   const response = await axios(`${baseurl}admin/get/${type}/member?password=${password}`, {
     method: 'get',
@@ -79,7 +76,7 @@ const refresh = async (type: string) => {
   if (response.data.status === 'ok') {
     table.value = response.data.details
   }
-  runner.close()
+  nProgress.done()
 }
 refresh('all')
 watch(choice, () => {
@@ -125,6 +122,7 @@ let isRegi = ref(false)
 let toTrueNumber = ref(0)
 let isFulling = ref(false)
 let toTrueDialog = ref(false)
+let beTheViceMinisterInTheSameTime = ref(false)
 const toTrueIt = () => {
   isRegi.value = false
   isFulling.value = true
@@ -135,7 +133,7 @@ const toTrueIt = () => {
       position: toTrueDo.value,
     },
     method: 'post',
-  }).then((response) => {
+  }).then(response => {
     if (response.data.status === 'ok') {
       sucfuc()
     } else {
@@ -181,6 +179,9 @@ const createMember = async () => {
     if (information.union.position === 'chairman') {
       information.union.admin = ['deduction', 'post', 'radio', 'volunteer']
     }
+    if (beTheViceMinisterInTheSameTime.value) {
+      information.union.admin.push('member-volunteer')
+    }
     const response = await axios(`${baseurl}admin/new/member`, {
       data: {
         member: information,
@@ -203,24 +204,6 @@ const createMember = async () => {
     refresh(choice.value)
   }
 }
-const sendOutVolunteerTime = () => {
-  const loader = ElLoading.service({
-    text: '正在发送义工时间，请稍后...',
-  })
-  axios(`${baseurl}admin/volunteer/sendout`, {
-    data: {
-      password,
-    },
-    method: 'post',
-  }).then((response) => {
-    loader.close()
-    if (response.data.status === 'ok') {
-      sucfuc()
-    } else {
-      failfuc(response.data.reason, response.data.text)
-    }
-  })
-}
 </script>
 
 <template>
@@ -233,7 +216,6 @@ const sendOutVolunteerTime = () => {
             <el-card shadow="never">
               <template #header>
                 <el-button type="text" @click="isRegistingMember = true"> 添加成员 </el-button>
-                <el-button type="text" @click="sendOutVolunteerTime"> 发放义工时间 </el-button>
               </template>
               <el-table
                 :data="table.filter((data: any) => !search || data.number.toLowerCase().includes(search.toLowerCase()) || String(data.person).toLowerCase().includes(search.toLowerCase()))"
@@ -250,7 +232,7 @@ const sendOutVolunteerTime = () => {
                 </el-table-column>
                 <el-table-column prop="name" label="姓名" />
                 <el-table-column prop="number" label="学号" />
-                <el-table-column prop="in" label="所属部门" />
+                <el-table-column prop="do" label="职务" />
                 <el-table-column align="right" fixed="right">
                   <template #header>
                     <el-input v-model="search" size="mini" placeholder="输入以搜索" />
@@ -300,12 +282,13 @@ const sendOutVolunteerTime = () => {
           <el-select v-model="information.union.admin" multiple collapse-tags style="width: 100%">
             <el-option v-for="item in vadmins" :key="item.value" :label="item.name" :value="item.value"></el-option>
           </el-select>
+          <el-checkbox v-if="information.union.department !== ''" v-model="beTheViceMinisterInTheSameTime" label="在部门内同时担任副部长职务"></el-checkbox>
         </el-form-item>
       </el-form>
       <template #footer>
         <span>
           <el-button @click="isRegistingMember = false"> 取消 </el-button>
-          <el-button color="#626aef" style="color: white" :loading="isSubmiting" @click="createMember"> 确定 </el-button>
+          <el-button type="primary" :loading="isSubmiting" @click="createMember"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -323,7 +306,7 @@ const sendOutVolunteerTime = () => {
       <template #footer>
         <span>
           <el-button @click="toTrueDialog = false"> 取消 </el-button>
-          <el-button color="#626aef" style="color: white" :loading="isFulling" @click="toTrueIt()"> 确定 </el-button>
+          <el-button type="primary" :loading="isFulling" @click="toTrueIt()"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>

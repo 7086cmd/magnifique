@@ -29,7 +29,7 @@ async function login() {
     return
   }
   createClassLoginer(Number(gradeid.value), Number(classid.value), window.btoa(password.value))
-    .then((response) => {
+    .then(response => {
       localStorage.setItem('classLoginInfo', response)
       provide('classLoginInfo', response)
       ElMessageBox.alert('成功登录', '成功', {
@@ -49,18 +49,18 @@ async function login() {
   <transition name="el-zoom-in-top" appear>
     <el-form @submit="login">
       <el-form-item label="年级">
-        <el-select v-model="gradeid" outlined style="width: 100%">
-          <el-option v-for="item in grades" :key="item.value" :label="item.label" :value="item.value" />
+        <el-select id="e2e_tst_class_grade_id" v-model="gradeid" outlined style="width: 100%">
+          <el-option v-for="item in grades" :id="'e2e_tst_class_grade_id_' + item.value" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="班级">
-        <el-input v-model="classid" outlined style="width: 100%" />
+        <el-input id="e2e_tst_class_class_id" v-model="classid" outlined style="width: 100%" />
       </el-form-item>
       <el-form-item label="密码">
-        <el-input v-model="password" outlined style="width: 100%" type="password" />
+        <el-input id="e2e_tst_class_password" v-model="password" outlined style="width: 100%" type="password" />
       </el-form-item>
       <el-form-item>
-        <el-button outline plain color="#626aef" style="color: white; width: 100%" @click="login"> 提交 </el-button>
+        <el-button id="e2e_tst_class_login_btn" outline plain type="primary" style="width: 100%" @click="login"> 提交 </el-button>
       </el-form-item>
     </el-form>
   </transition>

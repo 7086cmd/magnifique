@@ -9,10 +9,10 @@ const main = async () => {
   if (version !== text[0].name) {
     const item = text[0].assets[0]
     fetch(item.browser_download_url)
-      .then((resp) => resp.text())
-      .then((txt) => {
+      .then(resp => resp.text())
+      .then(txt => {
         const latest = parse(txt) as latestFile
-        text[0].assets.forEach((item) => {
+        text[0].assets.forEach(item => {
           if (item.name === latest.path) {
             shell.openExternal(item.browser_download_url.toString())
           }

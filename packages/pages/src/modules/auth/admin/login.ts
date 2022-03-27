@@ -9,7 +9,7 @@ const login = async (passwordEncoded: string) => {
       password: passwordEncoded,
     },
   })
-    .then((response) => {
+    .then(response => {
       if (response.data.status == 'ok') {
         return window.btoa(
           JSON.stringify({
@@ -22,7 +22,7 @@ const login = async (passwordEncoded: string) => {
         throw 'error'
       }
     })
-    .catch((reason) => {
+    .catch(reason => {
       window.localStorage.removeItem('adminLoginInfo')
       if (new Error(reason).message !== 'error') {
         ElMessageBox.alert('前端执行报错：' + new Error(reason).message, '登陆失败')

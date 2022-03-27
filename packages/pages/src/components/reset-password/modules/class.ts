@@ -34,14 +34,14 @@ export default (
         newp: window.btoa(newpwd.newpwd1),
         password: window.btoa(newpwd.oldpwd),
       }),
-    }).then((response) => {
+    }).then(response => {
       if (response.data.status == 'ok') {
         ElMessageBox.alert('成功', '修改密码', {
           type: 'success',
           center: true,
         }).then(() => {
           localStorage.removeItem('classLoginInfo')
-          router.push('/class/login')
+          router.push('/')
         })
       } else {
         ElMessageBox.alert(

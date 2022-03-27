@@ -52,24 +52,13 @@ const getColor = (deduction: number) => {
       <el-descriptions-item label="解释说明">
         {{ detail.description }}
       </el-descriptions-item>
-      <el-descriptions-item label="申诉状态">
-        <el-popover placement="top-start" title="申斥状态" :width="500" trigger="hover">
-          <template #reference>
-            <el-button type="text">
-              {{ fbstatus[detail.status] }}
-            </el-button>
-          </template>
-          <span v-if="data.status !== 'normal'"> 申诉原因：{{ detail.msgs.feedback }} </span>
-          <br />
-          <span v-if="data.status === 'failed'"> 驳回原因：{{ detail.msgs.turndown }} </span>
-        </el-popover>
-      </el-descriptions-item>
+      <el-descriptions-item label="申诉状态">{{ fbstatus[detail.status] }}</el-descriptions-item>
     </el-descriptions>
-    <p style="font-size: 14px">
+    <div style="font-size: 14px">
       <span>扣分编号: <el-tag type="info" v-text="data.id"></el-tag></span>
-      <span v-if="data.status !== 'normal'"> 申诉原因：{{ detail.msgs.feedback }} </span>
+      <p v-if="data.status !== 'normal'">申诉原因：<markdown :content="detail.msgs.feedback" /></p>
       <br />
-      <span v-if="data.status === 'failed'"> 驳回原因：{{ detail.msgs.turndown }} </span>
-    </p>
+      <p v-if="data.status === 'failed'">驳回原因：<markdown :content="detail.msgs.turndown" /></p>
+    </div>
   </div>
 </template>

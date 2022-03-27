@@ -28,7 +28,7 @@ rules:
   no-console: 2
   prettier/prettier:
     - error
-    - arrowParens: always
+    - arrowParens: avoid
       bracketSameLine: false
       bracketSpacing: true
       embeddedLanguageFormatting: auto

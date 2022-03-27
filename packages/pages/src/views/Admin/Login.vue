@@ -14,7 +14,7 @@ const router = useRouter()
 let password = ref('')
 
 const login = () => {
-  axios(`${baseurl}admin/login?password=${window.btoa(password.value)}`).then((response) => {
+  axios(`${baseurl}admin/login?password=${window.btoa(password.value)}`).then(response => {
     if (response.data.status == 'ok') {
       let timeOut = 3
       ElMessageBox.alert(`欢迎使用。` + t('class.status.jump', { sec: timeOut }), '登陆成功', {
@@ -57,7 +57,7 @@ const login = () => {
       <el-input v-model="password" type="password" />
     </el-form-item>
     <el-form-item>
-      <el-button color="#626aef" style="color: white; width: 100%" plain @click="login"> 确定 </el-button>
+      <el-button type="primary" style="width: 100%" plain @click="login"> 确定 </el-button>
     </el-form-item>
   </el-form>
 </template>

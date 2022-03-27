@@ -10,9 +10,9 @@ const countWorkflow = (wfl: Record<string, workflow>) => {
   for (let val of Object.values(wfl)) {
     const statuses = {
       planning: 0,
-      working: 1,
-      success: 3,
-      depracted: -5,
+      working: 0.5,
+      success: 2,
+      depracted: -3,
     }
     t += statuses[val.status]
   }
@@ -27,8 +27,12 @@ const countDeduction = (dec: Record<string, deduction>) => {
   return t
 }
 
-const countPost = (pos: Record<string, post>) => {
-  return Object.entries(pos).length
+const countPost = (pos?: Record<string, post>) => {
+  if (pos === undefined) {
+    return 0
+  } else {
+    return Object.entries(pos).length
+  }
 }
 
 export default (memberNum: number) => {
@@ -36,12 +40,12 @@ export default (memberNum: number) => {
   let infor = getMemberAsRaw(memberNum).details as member
   const score =
     base +
-    countPost(infor.post?.details) * 5 +
-    getMyOwnDeduction(memberNum).details.length +
+    countPost(infor.post?.details) * 8 +
+    getMyOwnDeduction(memberNum).details.length * 0.5 +
     infor.record.actions * 2 +
     createVolunteerCounter(memberNum) -
-    infor.record.violation * 20 -
-    countDeduction(infor.deduction?.details) * 15 +
+    infor.record.violation * 12 -
+    countDeduction(infor.deduction.details) * 20 +
     countWorkflow(infor.workflow.details)
   if (score >= 100) {
     infor.record.score = 100

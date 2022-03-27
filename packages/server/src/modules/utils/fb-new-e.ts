@@ -3,7 +3,8 @@ import { resolve } from 'path'
 import { existsSync } from 'fs'
 import { tmpdir } from 'os'
 import dataSave from './data-save'
-export default (config: { title: string; description: string; from: 'class' | 'member' | 'admin'; more?: { grade: number; class: number } | { num: number } }) => {
+import { createNewAction } from '../powers/member'
+export default (config: { title: string; description: string; from: 'class' | 'member' | 'admin'; more?: { grade: number; class: number; num?: undefined } | { num: number } }) => {
   try {
     const temppath = resolve(tmpdir(), '../magnifique/feedbacks/')
     let id = v4()
@@ -14,6 +15,11 @@ export default (config: { title: string; description: string; from: 'class' | 'm
       config['id'] = id
     }
     dataSave(resolve(temppath, `./${id}.sdbdata`), config)
+    if (config.from === 'member') {
+      if (config.more?.num !== undefined) {
+        createNewAction(config.more?.num, 1)
+      }
+    }
     return {
       status: 'ok',
     }

@@ -21,7 +21,7 @@ export default (config?: { start: string; end: string }) => {
   } else {
     const startline = dayjs(config.start)
     const endline = dayjs(config.end)
-    base.filter((item) => dayjs(item.time).isBetween(startline, endline))
+    base.filter(item => dayjs(item.time).isBetween(startline, endline))
     return {
       status: 'ok',
       details: base,

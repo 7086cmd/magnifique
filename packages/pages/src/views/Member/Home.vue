@@ -21,11 +21,11 @@ try {
 
 const { number, password } = JSON.parse(window.atob(String(sessionStorage.getItem('memberLoginInfo'))))
 
-axios(`${baseurl}member/getinfo/${number}/`).then((response) => {
+axios(`${baseurl}member/getinfo/${number}/`).then(response => {
   name.value = response.data.details.name
 })
 
-axios(`${baseurl}member/${number}/login?password=${password}`).then((response) => {
+axios(`${baseurl}member/${number}/login?password=${password}`).then(response => {
   if (response.data.status !== 'ok') {
     sessionStorage.removeItem('memberLoginInfo')
     ElMessageBox.alert('您的密码有误，已为您引导到班级界面，点击“成员登录”即可再次登录。', '密码错误', {
@@ -40,7 +40,7 @@ axios(`${baseurl}member/${number}/login?password=${password}`).then((response) =
   <el-container>
     <el-aside width="12%">
       <el-menu v-model="pageSelected" default-active="/member/" :collapse="true" style="min-height: 1024px; padding-top: 2em" collapse-transition router>
-        <el-menu-item index="/class/">
+        <el-menu-item index="/">
           <el-icon>
             <Back />
           </el-icon>

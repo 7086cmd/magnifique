@@ -15,6 +15,6 @@ export default (config?: { start: string; end: string }) => {
   }
   return {
     status: 'ok',
-    details: config === undefined ? base : base.filter((item) => dayjs(item.time).isBetween(dayjs(config.start), dayjs(config.end))),
+    details: config === undefined ? base : base.filter(item => dayjs(item.time).isBetween(dayjs(config.start), dayjs(config.end))),
   }
 }

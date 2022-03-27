@@ -11,6 +11,7 @@ import VolunteerDescription from '../../../components/lists/VolunteerDescription
 import createYearTransformer from '../../../modules/utils/transform-date'
 import dayjs from 'dayjs'
 import { v4 } from 'uuid'
+import toPort from '../../../modules/to-port'
 
 const { gradeid, classid, password } = JSON.parse(window.atob(String(localStorage.getItem('classLoginInfo'))))
 let basicnum = ref(0)
@@ -22,14 +23,14 @@ let isRegistingVolunteer = ref(false)
 let volunteerData = reactive(volunteerExample())
 volunteerData.status = 'planning'
 let persons = ref<member_processed[]>([])
-axios(`${baseurl}class/${gradeid}/${classid}/member/get?password=${password}`).then((response) => {
+axios(`${baseurl}class/${gradeid}/${classid}/member/get?password=${password}`).then(response => {
   persons.value.push(...response.data.details)
 })
 let loading = ref(true)
 let volunteerDetail = ref<VolunteerQueryResult[]>([])
 const refresh = () => {
   loading.value = true
-  axios(`${baseurl}class/${gradeid}/${classid}/get/volunteer?password=${password}`).then((response) => {
+  axios(`${baseurl}class/${gradeid}/${classid}/get/volunteer?password=${password}`).then(response => {
     loading.value = false
     if (response.data.status == 'ok') {
       volunteerDetail.value = response.data.details as VolunteerQueryResult[]
@@ -105,7 +106,7 @@ const createExport = async () => {
   isSubmiting.value = false
   if (response.data.status == 'ok') {
     sucfuc()
-    window.open(`${baseurl}admin/export/download/${response.data.details.token}`, isClient.value ? '_self' : '_blank')
+    window.open(toPort(`${baseurl}admin/export/download/${response.data.details.token}`), isClient.value ? '_self' : '_blank')
   } else {
     failfuc(response.data.reason, response.data.text)
   }
@@ -185,7 +186,7 @@ const createExport = async () => {
         <template #footer>
           <span>
             <el-button @click="isRegistingVolunteer = false"> 取消 </el-button>
-            <el-button color="#626aef" style="color: white" :loading="isSubmiting" @click="createRegistry"> 确定 </el-button>
+            <el-button type="primary" :loading="isSubmiting" @click="createRegistry"> 确定 </el-button>
           </span>
         </template>
       </el-dialog>
@@ -193,7 +194,7 @@ const createExport = async () => {
         <el-date-picker v-model="exportTime" type="datetimerange" style="width: 100%" range-separator="到" start-placeholder="开始日期" end-placeholder="结束日期" />
         <br />
         <template #footer>
-          <el-button color="#626aef" style="color: white; text-align: center" @click="createExport" v-text="'导出'" />
+          <el-button type="primary" style="text-align: center" @click="createExport" v-text="'导出'" />
         </template>
       </el-dialog>
     </div>

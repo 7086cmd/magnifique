@@ -16,6 +16,7 @@ import AdminHome from '../views/Admin/Home.vue'
 import AdminData from '../views/Admin/Data.vue'
 import AdminMember from '../views/Admin/Member.vue'
 import Server from '../views/Server.vue'
+import MessagesHome from '../views/Messages/Index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -134,6 +135,10 @@ const routes: Array<RouteRecordRaw> = [
         component: AdminMember,
       },
     ],
+  },
+  {
+    path: '/messages',
+    component: MessagesHome,
   },
 ]
 

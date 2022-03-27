@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 /* global VolunteerQueryResult, member_processed, member */
-import { ref, reactive, defineProps } from 'vue'
+import { ref, reactive, defineProps, Ref } from 'vue'
 import axios from 'axios'
 import { Refresh } from '@element-plus/icons-vue'
 import baseurl from '../../../modules/baseurl'
@@ -11,6 +11,8 @@ import VolunteerDescription from '../../../components/lists/VolunteerDescription
 import personExample from '../../../../examples/person'
 import dayjs from 'dayjs'
 import { v4 } from 'uuid'
+import toPort from '../../../modules/to-port'
+
 const { password, number } = JSON.parse(window.atob(String(sessionStorage.getItem('memberLoginInfo'))))
 
 const props = defineProps<{ type: 'member' | 'volunteer' }>()
@@ -24,10 +26,10 @@ let volunteerData = reactive(volunteerExample())
 volunteerData.status = 'planning'
 let persons = ref<member_processed[]>([])
 let loading = ref(true)
-let volunteerDetail = ref([])
-axios(`${baseurl}member/getinfo/${number}/raw`).then((response) => {
+let volunteerDetail = ref<VolunteerQueryResult[]>([])
+axios(`${baseurl}member/getinfo/${number}/raw`).then(response => {
   aboutme.value = response.data.details as member
-  axios(`${baseurl}member/admin/${number}/get/${props.type === 'volunteer' ? 'core' : (aboutme.value as member).union.department}/member?password=${password}`).then((responser) => {
+  axios(`${baseurl}member/admin/${number}/get/${props.type === 'volunteer' ? 'core' : (aboutme.value as member).union.department}/member?password=${password}`).then(responser => {
     persons.value = responser.data.details
   })
   refresh()
@@ -35,7 +37,7 @@ axios(`${baseurl}member/getinfo/${number}/raw`).then((response) => {
 })
 const refresh = () => {
   loading.value = true
-  axios(`${baseurl}member/admin/${number}/get/${props.type === 'volunteer' ? 'core' : (aboutme.value as member).union.department}/volunteer?password=${password}`).then((response) => {
+  axios(`${baseurl}member/admin/${number}/get/${props.type === 'volunteer' ? 'core' : (aboutme.value as member).union.department}/volunteer?password=${password}`).then(response => {
     loading.value = false
     if (response.data.status == 'ok') {
       volunteerDetail.value = response.data.details as VolunteerQueryResult[]
@@ -75,19 +77,20 @@ const createRegistry = async () => {
     }
   }
 }
-const editStatusVolunteer = (props: { row: VolunteerQueryResult }) => {
+let editId = ref<string>()
+const editStatusVolunteer = (person: number[]) => {
   axios(`${baseurl}member/admin/edit/volunteer`, {
     data: {
       password,
       volunteerInfo: {
-        person: props.row.person,
-        id: props.row.createId,
+        person: person,
+        id: editId.value,
         status: 'done',
       },
       number,
     },
     method: 'post',
-  }).then((response) => {
+  }).then(response => {
     if (response.data.status == 'ok') {
       sucfuc()
     } else {
@@ -106,7 +109,7 @@ const deleteVolunteer = (props: { row: VolunteerQueryResult }) => {
       number,
     },
     method: 'post',
-  }).then((response) => {
+  }).then(response => {
     if (response.data.status === 'ok') {
       sucfuc()
     } else {
@@ -148,10 +151,38 @@ const createExport = async () => {
   isSubmiting.value = false
   if (response.data.status == 'ok') {
     sucfuc()
-    window.open(`${baseurl}admin/export/download/${response.data.details.token}`, isClient.value ? '_self' : '_blank')
+    window.open(toPort(`${baseurl}admin/export/download/${response.data.details.token}`), isClient.value ? '_self' : '_blank')
   } else {
     failfuc(response.data.reason, response.data.text)
   }
+}
+
+let isCheckin = ref(false)
+let doneMember = ref<number[]>([])
+interface options {
+  key: number
+  label: string
+  disabled: boolean
+}
+let waitForChoose: Ref<options[]> = ref([])
+const startPassing = (props: { row: VolunteerQueryResult }) => {
+  editId.value = props.row.createId
+  isCheckin.value = true
+  waitForChoose.value = persons.value
+    .filter(item => {
+      const persons = props.row.person
+      const afterMap = persons.map(x => Number(x))
+      return afterMap.includes(Number(item.number))
+    })
+    .map(
+      item =>
+        ({
+          key: Number(item.number),
+          label: String(item.name),
+          disabled: false,
+        } as options)
+    )
+  doneMember.value = props.row.records.filter(x => x.status === 'done').map(x => Number(x.person))
 }
 </script>
 <template>
@@ -179,20 +210,13 @@ const createExport = async () => {
               <el-table-column label="义工时长">
                 <template #default="prop"> {{ prop.row.duration }}小时 </template>
               </el-table-column>
-              <el-table-column label="登记状态">
-                <template #default="prop">
-                  <el-tag v-if="prop.row.status === 'done'" type="success">已完成</el-tag>
-                  <el-tag v-else-if="prop.row.status === 'planning'" type="warning">计划中</el-tag>
-                  <el-tag v-else type="error">已错过</el-tag>
-                </template>
-              </el-table-column>
               <el-table-column align="right" fixed="right">
                 <template #header>
                   <el-button type="text" @click="isRegistingVolunteer = true"> 义工登记 </el-button>
                   <el-button type="text" @click="ExportStart()"> 导出 </el-button>
                 </template>
                 <template #default="prop">
-                  <el-button type="text" :disabled="prop.row.status === 'done' || prop.row.person.includes(number)" @click="editStatusVolunteer(prop)">通过</el-button>
+                  <el-button type="text" @click="startPassing(prop)">通过</el-button>
                   <el-button type="text" :disabled="prop.row.status === 'miss'" @click="deleteVolunteer(prop)">删除</el-button>
                 </template>
               </el-table-column>
@@ -232,7 +256,7 @@ const createExport = async () => {
         <template #footer>
           <span>
             <el-button @click="isRegistingVolunteer = false"> 取消 </el-button>
-            <el-button color="#626aef" style="color: white" :loading="isSubmiting" @click="createRegistry"> 确定 </el-button>
+            <el-button type="primary" :loading="isSubmiting" @click="createRegistry"> 确定 </el-button>
           </span>
         </template>
       </el-dialog>
@@ -240,8 +264,12 @@ const createExport = async () => {
         <el-date-picker v-model="exportTime" type="datetimerange" style="width: 100%" range-separator="到" start-placeholder="开始日期" end-placeholder="结束日期" />
         <br />
         <template #footer>
-          <el-button color="#626aef" style="color: white; text-align: center" @click="createExport" v-text="'导出'" />
+          <el-button type="primary" @click="createExport" v-text="'导出'" />
         </template>
+      </el-dialog>
+      <el-dialog v-model="isCheckin" title="登记义工/考勤情况">
+        <el-transfer v-model="doneMember" :titles="['缺勤成员', '实到成员']" :button-texts="['缺勤', '到勤']" :data="waitForChoose" />
+        <el-button type="primary" @click="editStatusVolunteer(doneMember)">登记</el-button>
       </el-dialog>
     </div>
   </transition>
