@@ -1,9 +1,10 @@
+import dayjs from 'dayjs'
 import { createYearTransformer } from 'packages/pages/src/modules/utils'
 import { getSingleMemberAsRaw } from 'packages/server/src/modules/powers/member'
-import { createSdbdataParser } from 'packages/server/src/modules/utils'
+import { messageActions } from '../../..'
 import routeIndex from '../../../utils/route-index'
-import { createRoomLocation } from '../../utils/rooms-loc'
 import { createSingleRoomItemGetter } from './read-single-room'
+import { getAllRooms } from './vail-all-rooms'
 
 const getClassName = (gradeid: number, classid: number) => {
   const gids = ['', '初一', '初二', '初三']
@@ -41,20 +42,29 @@ const getRecent = (messageFile: MessageFile) => {
 }
 
 const readMyRooms = (user: string) => {
-  // createPath(user)
-  const location = createRoomLocation(user)
-  const roomIds = createSdbdataParser(location as string).messageRooms as string[]
+  const roomIds = getAllRooms(user)
   if (typeof roomIds === 'undefined') {
     return []
   }
-  return (
-    roomIds.map(item => ({
-      title: createSingleRoomItemGetter(item).config.title,
-      id: item,
-      recent: getRecent(createSingleRoomItemGetter(item)),
-      members: createSingleRoomItemGetter(item).config.users.map(x => ({ id: x, name: getPerson(x) })),
-    })) ?? []
-  )
+
+  return roomIds
+    .map(item => {
+      const roomInf = createSingleRoomItemGetter(item)
+      return {
+        title:
+          roomInf.config.users.length === 1 ? `我（${getPerson(user)}）` : roomInf.config.users.length !== 2 ? roomInf.config.title : getPerson(roomInf.config.users.filter(item => item !== user)[0]),
+        id: item,
+        recent: getRecent(createSingleRoomItemGetter(item)),
+        members: createSingleRoomItemGetter(item).config.users.map(x => ({ id: x, name: getPerson(x) })),
+      }
+    })
+    .sort((item1, item2) => {
+      const i1rec = messageActions.createMessageReader(item1.id, item1.members.map(item => item.id)[0]).details
+      const i2rec = messageActions.createMessageReader(item2.id, item2.members.map(item => item.id)[0]).details
+      const i1s = i1rec?.sort((a, b) => dayjs(b.createDate).unix() - dayjs(a.createDate).unix())[0]
+      const i2s = i2rec?.sort((a, b) => dayjs(b.createDate).unix() - dayjs(a.createDate).unix())[0]
+      return dayjs(i2s?.createDate).unix() - dayjs(i1s?.createDate).unix()
+    })
 }
 
-export { readMyRooms }
+export { readMyRooms, getPerson }

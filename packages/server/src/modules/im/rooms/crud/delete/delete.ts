@@ -20,6 +20,9 @@ const deleteRoom = (roomId: string) => {
     removeUserInRoom(item, roomId)
   })
   rmSync(roomFilePath)
+  return {
+    status: 'ok',
+  }
 }
 
 export { deleteRoom }

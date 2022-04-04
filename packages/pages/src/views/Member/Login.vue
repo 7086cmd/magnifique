@@ -2,7 +2,7 @@
 <!-- eslint-disable vue/max-attributes-per-line -->
 <script lang="ts" setup>
 /* global member_processed */
-import { ref, watch } from 'vue'
+import { ref, watch, defineProps, toRefs } from 'vue'
 import axios from 'axios'
 import { ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
@@ -11,21 +11,19 @@ import getData from '../../components/get-data'
 import { encode } from '../../components/record-data'
 import failfuc from '../../modules/failfuc'
 
-let isClient = ref(false)
-
-try {
-  if (window.magnifique.isElectron === true) {
-    isClient.value = true
-  }
-  // eslint-disable-next-line no-empty
-} catch (_e) {}
+const props = defineProps<{
+  numberDef?: string
+  passwordDef?: string
+  redr?: string
+}>()
+const { numberDef, passwordDef, redr } = toRefs(props)
 const router = useRouter()
 
-let number = ref('')
-let password = ref('')
+let number = ref(numberDef?.value ?? '')
+let password = ref(passwordDef?.value ?? '')
 let name = ref('')
 let duty = ref('')
-watch(number, () => {
+const g = () => {
   duty.value = ''
   if (number.value.split('').length === 8) {
     axios({
@@ -41,7 +39,9 @@ watch(number, () => {
   } else {
     name.value = '不存在'
   }
-})
+}
+watch(number, g)
+numberDef?.value && g()
 
 const login = () => {
   if (['', '不存在', '非正式成员不可登录'].includes(name.value)) {
@@ -55,12 +55,7 @@ const login = () => {
     })
     axios(`${baseurl}member/${number.value}/login?password=${window.btoa(password.value)}`).then(response => {
       if (response.data.status == 'ok') {
-        ElMessageBox.alert(`${name.value}，欢迎使用。`, '登陆成功', {
-          type: 'success',
-          center: true,
-        }).then(() => {
-          router.push('/member/')
-        })
+        router.push(redr?.value ?? '/member/')
         sessionStorage.setItem(
           'memberLoginInfo',
           encode({
@@ -68,9 +63,6 @@ const login = () => {
             password: window.btoa(password.value),
           })
         )
-        setTimeout(() => {
-          router.push('/member/')
-        }, 3000)
       } else {
         localStorage.removeItem('memberLoginInfo')
         failfuc(response.data.reason, response.data.text)
@@ -82,17 +74,17 @@ const login = () => {
 
 <template>
   <el-form>
-    <el-form-item label="学号">
+    <el-form-item label="学号" :readonly="numberDef !== undefined">
       <el-input v-model="number" />
     </el-form-item>
     <el-form-item label="姓名">
-      <el-input v-model="name" readonly />
+      <el-input v-model="name" readonly :disabled="numberDef" />
     </el-form-item>
     <el-form-item label="密码">
       <el-input v-model="password" type="password" />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" style="width: 100%" plain @click="login"> 确定 </el-button>
+      <el-button type="primary" style="width: 100%" plain round @click="login"> 确定 </el-button>
     </el-form-item>
   </el-form>
 </template>

@@ -15,8 +15,10 @@ import MemberAdminHome from '../views/Member/admin/Home.vue'
 import AdminHome from '../views/Admin/Home.vue'
 import AdminData from '../views/Admin/Data.vue'
 import AdminMember from '../views/Admin/Member.vue'
+import AdminMessage from '../views/Admin/Message.vue'
 import Server from '../views/Server.vue'
 import MessagesHome from '../views/Messages/Index.vue'
+import loginPortableVue from '../views/Member/login_portable.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -63,6 +65,13 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: '/member/message/:id',
+        component: MemberMessage,
+        meta: {
+          transition: 'fade',
+        },
+      },
+      {
         path: 'admin/',
         component: MemberAdminHome,
         meta: {
@@ -70,6 +79,13 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
     ],
+  },
+  {
+    path: '/login/member/:id',
+    component: loginPortableVue,
+    meta: {
+      transition: 'fade',
+    },
   },
   {
     path: '/class',
@@ -111,6 +127,13 @@ const routes: Array<RouteRecordRaw> = [
           transition: 'fade',
         },
       },
+      {
+        path: '/class/message/:id',
+        component: ClassMessage,
+        meta: {
+          transition: 'fade',
+        },
+      },
     ],
   },
   {
@@ -133,6 +156,20 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/admin/member',
         component: AdminMember,
+      },
+      {
+        path: 'message',
+        component: AdminMessage,
+        meta: {
+          transition: 'fade',
+        },
+      },
+      {
+        path: '/admin/message/:id',
+        component: AdminMessage,
+        meta: {
+          transition: 'fade',
+        },
       },
     ],
   },

@@ -6,9 +6,12 @@ export * from './rooms'
 export * from './messages'
 export * from './auth'
 export { createMemberMap }
+export * from './ntfc/create-body'
+import { createBody } from './ntfc/create-body'
 export default {
   roomActions,
   messageActions,
   loginModule,
   createMemberMap,
+  createBody,
 }

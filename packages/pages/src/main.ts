@@ -28,6 +28,12 @@ import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/
 import type MarkdownIt from 'markdown-it'
 import SubPlugin from 'markdown-it-sub'
 import SupPlugin from 'markdown-it-sup'
+import AbbrPlugin from 'markdown-it-abbr'
+import MarkPlugin from 'markdown-it-mark'
+import InsPlugin from 'markdown-it-ins'
+import FootnotePlugin from 'markdown-it-footnote'
+import ApexCharts from 'vue3-apexcharts'
+import Menus from 'vue3-menus'
 import '@kangc/v-md-editor/lib/style/base-editor.css'
 import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
 import '@kangc/v-md-editor/lib/plugins/mermaid/mermaid.css'
@@ -35,6 +41,7 @@ import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css'
 import '@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css'
 import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css'
 import '@kangc/v-md-editor/lib/style/preview.css'
+import './tauri'
 
 const app = createApp(App)
 
@@ -65,6 +72,10 @@ VueMarkdownEditor.use(vuepressTheme, {
     })
     md.use(SubPlugin)
     md.use(SupPlugin)
+    md.use(FootnotePlugin)
+    md.use(InsPlugin)
+    md.use(MarkPlugin)
+    md.use(AbbrPlugin)
   },
 })
 VueMarkdownEditor.use(createEmojiPlugin())
@@ -75,6 +86,8 @@ VueMarkdownEditor.use(createMermaidPlugin())
 VueMarkdownEditor.use(createAlignPlugin())
 VueMarkdownEditor.use(createLineNumbertPlugin())
 app.use(VueMarkdownEditor)
+app.use(ApexCharts)
+app.use(Menus)
 app.mount('#app')
 
 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -83,3 +96,7 @@ if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     type: 'warning',
   })
 }
+
+window.addEventListener('beforeunload', () => {
+  window.open(window.location.href)
+})

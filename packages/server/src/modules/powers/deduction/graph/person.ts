@@ -10,8 +10,8 @@ export default (gradeid: number, classid: number, start: string, end: string) =>
   const base: {
     columns: string[]
     rows: {
-      个人: string
-      扣分数: number
+      name: string
+      data: number
     }[]
   } = {
     columns: ['个人', '扣分数'],
@@ -30,9 +30,9 @@ export default (gradeid: number, classid: number, start: string, end: string) =>
   let key: string, val: any
   for ([key, val] of Object.entries(list)) {
     base.rows.push({
-      个人: <string>key,
-      扣分数: Math.floor(val / 0.05) * 0.05,
+      name: <string>key,
+      data: Math.floor(val / 0.05) * 0.05,
     })
   }
-  return base
+  return base.rows
 }

@@ -43,6 +43,7 @@ import * as connectionActions from './modules/im'
 import getEmailConfig from './modules/database/get-email-config'
 import getOrigin from './modules/database/get-origin'
 import createIndex from './modules/im/utils/create-index'
+import { loginModule } from './modules/im'
 
 // Generate Chart Base File
 const chartBase = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="shortcut icon" href="https://v-charts.js.org/favicon.ico" type="image/x-icon" /><title>Chart (type: <%=tit=>)</title><script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script><script src="https://cdn.jsdelivr.net/npm/echarts@4/dist/echarts.min.js"></script><script src="https://cdn.jsdelivr.net/npm/v-charts/lib/index.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/v-charts/lib/style.min.css" /></head><body><div id="app"><ve-<%=tpe=> :data="cdata"></ve-<%=tpe=>></div><script>var vm=new Vue({el:'#app',data(){const data=JSON.parse('<%=dat=>');return {cdata:data}}})</script></body></html>`
@@ -322,15 +323,10 @@ router.get('/api/class/graph/:gradeid/:classid/:start/:end/:type/person', async 
     const { gradeid, classid, start, end } = ctx.params
     if (loginClass(parseInt(gradeid), parseInt(classid), String(password)).status == 'ok') {
       const chartData = deductionActions.graphAsPerson(parseInt(gradeid), parseInt(classid), start, end)
-      let id = v4()
-      while (graphTokens[id] !== undefined) {
-        id = v4()
-      }
-      graphTokens[id] = chartData
       ctx.response.body = {
         status: 'ok',
         details: {
-          token: id,
+          token: chartData,
         },
       }
     } else {
@@ -353,16 +349,9 @@ router.get('/api/class/graph/:gradeid/:classid/:start/:end/:type/reason', async 
     const { gradeid, classid, start, end } = ctx.params
     if (loginClass(parseInt(gradeid), parseInt(classid), String(password)).status == 'ok') {
       const chartData = deductionActions.graphAsReason(parseInt(gradeid), parseInt(classid), start, end)
-      let id = v4()
-      while (graphTokens[id] !== undefined) {
-        id = v4()
-      }
-      graphTokens[id] = chartData
       ctx.response.body = {
         status: 'ok',
-        details: {
-          token: id,
-        },
+        details: chartData,
       }
     } else {
       ctx.response.body = {
@@ -384,15 +373,10 @@ router.get('/api/class/graph/:gradeid/:classid/:start/:end/:type/date', async ct
     const { gradeid, classid, start, end } = ctx.params
     if (loginClass(parseInt(gradeid), parseInt(classid), String(password)).status == 'ok') {
       const chartData = deductionActions.graphAsDate(parseInt(gradeid), parseInt(classid), start, end)
-      let id = v4()
-      while (graphTokens[id] !== undefined) {
-        id = v4()
-      }
-      graphTokens[id] = chartData
       ctx.response.body = {
         status: 'ok',
         details: {
-          token: id,
+          token: chartData,
         },
       }
     } else {
@@ -2155,7 +2139,7 @@ router.post('/api/admin/export/volunteer', async ctx => {
   }
 })
 
-router.get('/api/message/get/rooms', async ctx => {
+router.get('/api/message/room', async ctx => {
   const params = new URLSearchParams(ctx.querystring)
   const username = params.get('username') as string
   const password = params.get('password') as string
@@ -2171,13 +2155,98 @@ router.get('/api/message/get/rooms', async ctx => {
     }
   }
 })
-router.get('/api/message/get/fulllist', async ctx => {
+router.get('/api/message/memberlist', async ctx => {
   ctx.response.body = {
     status: 'ok',
     details: connectionActions.createMemberMap(),
   }
 })
-router.get('/api/message/get/messages', async ctx => {
+router.post('/api/message/room', async ctx => {
+  const roomConfig = ctx.request.body as {
+    data: {
+      title: string
+      description: string
+      users: string[]
+    }
+    auth: {
+      username: string
+      password: string
+    }
+  }
+  const { username, password } = roomConfig.auth
+  if ((connectionActions.loginModule(username, password).status as string) === 'ok') {
+    ctx.response.body = connectionActions.roomActions.createRoom(roomConfig.data)
+  } else {
+    ctx.response.body = {
+      status: 'error',
+      reason: 'password-wrong',
+    }
+  }
+})
+router.delete('/api/message/room', async ctx => {
+  const roomConfig = ctx.request.body as {
+    data: {
+      id: string
+    }
+    auth: {
+      username: string
+      password: string
+    }
+  }
+  const { username, password } = roomConfig.auth
+  if ((connectionActions.loginModule(username, password).status as string) === 'ok') {
+    ctx.response.body = connectionActions.roomActions.deleteRoom(roomConfig.data.id)
+  } else {
+    ctx.response.body = {
+      status: 'error',
+      reason: 'password-wrong',
+    }
+  }
+})
+router.delete('/api/message/room', async ctx => {
+  const deleteRoomConf = ctx.request.body as {
+    auth: {
+      username: string
+      password: string
+    }
+    data: {
+      roomId: string
+    }
+  }
+  const { username, password } = deleteRoomConf.auth
+  if ((connectionActions.loginModule(username, password).status as string) === 'ok') {
+    ctx.response.body = connectionActions.roomActions.deleteRoom(deleteRoomConf.data.roomId)
+  } else {
+    ctx.response.body = {
+      status: 'error',
+      reason: 'password-wrong',
+    }
+  }
+})
+router.put('/api/message/room', async ctx => {
+  const roomConfig = ctx.request.body as {
+    data: {
+      title: string
+      description: string
+      users: string[]
+      id: string
+    }
+    auth: {
+      username: string
+      password: string
+    }
+  }
+  const { username, password } = roomConfig.auth
+  if ((connectionActions.loginModule(username, password).status as string) === 'ok') {
+    ctx.response.body = connectionActions.roomActions.createMessageRoomEditor(roomConfig.data.id, roomConfig.data)
+  } else {
+    ctx.response.body = {
+      status: 'error',
+      reason: 'password-wrong',
+    }
+  }
+})
+router.get('/api/message/message', async ctx => {
   const params = new URLSearchParams(ctx.querystring)
   const username = params.get('username') as string
   const password = params.get('password') as string
@@ -2191,15 +2260,22 @@ router.get('/api/message/get/messages', async ctx => {
     }
   }
 })
-router.post('/api/message/create/message', async ctx => {
-  const { username, password, roomId, messageContent } = ctx.request.body as {
-    username: string
-    password: string
-    roomId: string
-    messageContent: message
+router.post('/api/message/message', async ctx => {
+  const createMessageContent = ctx.request.body as {
+    auth: {
+      username: string
+      password: string
+    }
+    data: {
+      roomId: string
+      messageContent: message
+    }
   }
+  const { username, password } = createMessageContent.auth
+  const { roomId, messageContent } = createMessageContent.data
   if ((connectionActions.loginModule(username, password).status as string) === 'ok') {
     ctx.response.body = connectionActions.messageActions.createTextMessageCreation(roomId, messageContent)
+    connectionActions.createBody('post', createMessageContent.auth.username, createMessageContent.data.roomId).forEach(item => io.emit('message', item))
   } else {
     ctx.response.body = {
       status: 'error',
@@ -2207,17 +2283,20 @@ router.post('/api/message/create/message', async ctx => {
     }
   }
 })
-router.post('/api/message/create/room', async ctx => {
-  const roomConfig = ctx.request.body as {
-    title: string
-    description: string
-    users: string[]
-    username: string
-    password: string
+router.delete('/api/message/message', async ctx => {
+  const { auth, data } = ctx.request.body as {
+    auth: {
+      username: string
+      password: string
+    }
+    data: {
+      roomId: string
+      messageId: string
+    }
   }
-  const { username, password } = roomConfig
-  if ((connectionActions.loginModule(username, password).status as string) === 'ok') {
-    ctx.response.body = connectionActions.roomActions.createRoom(roomConfig)
+  if ((connectionActions.loginModule(auth.username, auth.password).status as string) === 'ok') {
+    ctx.response.body = connectionActions.messageActions.createMessageDeletion(data.roomId, data.messageId, auth.username)
+    connectionActions.createBody('delete', auth.username, data.roomId).forEach(item => io.emit('message', item))
   } else {
     ctx.response.body = {
       status: 'error',
@@ -2225,32 +2304,21 @@ router.post('/api/message/create/room', async ctx => {
     }
   }
 })
-router.post('/api/message/delete/message', async ctx => {
-  const { username, password, roomId, messageId } = ctx.request.body as {
-    username: string
-    password: string
-    roomId: string
-    messageId: string
-  }
-  if ((connectionActions.loginModule(username, password).status as string) === 'ok') {
-    ctx.response.body = connectionActions.messageActions.createMessageDeletion(roomId, messageId, username)
-  } else {
-    ctx.response.body = {
-      status: 'error',
-      reason: 'password-wrong',
+router.patch('/api/message/message', async ctx => {
+  const { auth, data } = ctx.request.body as {
+    auth: {
+      username: string
+      password: string
+    }
+    data: {
+      roomId: string
+      messageId: string
+      updateContent: string
     }
   }
-})
-router.post('/api/message/update/message', async ctx => {
-  const { username, password, roomId, messageId, updateContent } = ctx.request.body as {
-    username: string
-    password: string
-    roomId: string
-    messageId: string
-    updateContent: string
-  }
-  if ((connectionActions.loginModule(username, password).status as string) === 'ok') {
-    ctx.response.body = connectionActions.messageActions.createTextMessageUpdate(roomId, messageId, updateContent, username)
+  if ((connectionActions.loginModule(auth.username, auth.password).status as string) === 'ok') {
+    ctx.response.body = connectionActions.messageActions.createTextMessageUpdate(data.roomId, data.messageId, data.updateContent, auth.username)
+    connectionActions.createBody('patch', auth.username, data.roomId).forEach(item => io.emit('message', item))
   } else {
     ctx.response.body = {
       status: 'error',
@@ -2336,16 +2404,8 @@ server.use(async ctx => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 io.on('connection', socket => {
   // ...
-  let query
-  if (socket.handshake.query.type == 'class') {
-    query = `class/${Number(socket.handshake.query.gradeid)} / ${Number(socket.handshake.query.classid)}`
-  } else {
-    query = 'admin'
-  }
-  // console.log(query)
-  socket.to(query).emit('quit-app')
-  socket.join(query)
-  socket.emit('connect-successfully')
+  let query = socket.handshake.query.username as string
+  if ((loginModule(socket.handshake.query.username as string, socket.handshake.query.password as string).status as string) == 'ok') socket.join(query)
 })
 
 app.setLoginItemSettings({

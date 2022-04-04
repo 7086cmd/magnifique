@@ -1,6 +1,6 @@
 declare interface messageConfig {
   users: Array<string>
-  createDate: string
+  // createDate: string
   title: string
   description: string
   id: string

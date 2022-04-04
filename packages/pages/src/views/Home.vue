@@ -48,15 +48,15 @@ if (!supportment) {
             <el-tabs v-model="choice">
               <el-tab-pane name="class" label="班级登录">
                 <class-login></class-login>
-                <el-button style="width: 100%" plain @click="toTag('class')">已登录</el-button>
+                <el-button style="width: 100%" plain round @click="toTag('class')">已登录</el-button>
               </el-tab-pane>
               <el-tab-pane name="member" label="成员登录">
                 <member-login></member-login>
-                <el-button style="width: 100%" plain @click="toTag('member')">已登录</el-button>
+                <el-button style="width: 100%" plain round @click="toTag('member')">已登录</el-button>
               </el-tab-pane>
               <el-tab-pane name="admin" label="管理员登录">
                 <admin-login></admin-login>
-                <el-button style="width: 100%" plain @click="toTag('admin')">已登录</el-button>
+                <el-button style="width: 100%" plain round @click="toTag('admin')">已登录</el-button>
               </el-tab-pane>
             </el-tabs>
           </el-card>

@@ -57,7 +57,7 @@ const login = () => {
       <el-input v-model="password" type="password" />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" style="width: 100%" plain @click="login"> 确定 </el-button>
+      <el-button type="primary" style="width: 100%" plain round @click="login"> 确定 </el-button>
     </el-form-item>
   </el-form>
 </template>

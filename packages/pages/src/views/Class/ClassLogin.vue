@@ -60,7 +60,7 @@ async function login() {
         <el-input id="e2e_tst_class_password" v-model="password" outlined style="width: 100%" type="password" />
       </el-form-item>
       <el-form-item>
-        <el-button id="e2e_tst_class_login_btn" outline plain type="primary" style="width: 100%" @click="login"> 提交 </el-button>
+        <el-button id="e2e_tst_class_login_btn" outline plain round type="primary" style="width: 100%" @click="login"> 提交 </el-button>
       </el-form-item>
     </el-form>
   </transition>

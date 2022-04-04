@@ -1,10 +1,18 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElNotification } from 'element-plus'
+import failfuc from '../../../modules/failfuc'
+import { unref } from 'vue'
 import baseurl from '../../../modules/baseurl'
 import routeIndex from '../utils/route-index'
 
 // const baseurl = `http://localhost/api/`
+
+interface FullList {
+  label: string
+  value: string
+  children?: FullList[]
+}
 
 export class MessageClient {
   userConfig: fetchAsAdmin | fetchAsClass | fetchAsSingleMember | undefined
@@ -31,7 +39,7 @@ export class MessageClient {
   }
   getLatestRooms = async () => {
     return (
-      await axios(baseurl + 'message/get/rooms', {
+      await axios(baseurl + 'message/room', {
         params: {
           username: this.userId,
           password: this.password,
@@ -41,7 +49,7 @@ export class MessageClient {
   }
   getRoomMessages = async (roomId: string) => {
     return (
-      await axios(baseurl + 'message/get/messages', {
+      await axios(baseurl + 'message/message', {
         params: {
           username: this.userId,
           password: this.password,
@@ -56,17 +64,21 @@ export class MessageClient {
   }
   createMessage = async (roomId: string, messageContent: string, status: Record<string, boolean>) => {
     return (
-      await axios(baseurl + 'message/create/message', {
+      await axios(baseurl + 'message/message', {
         data: {
-          username: this.userId,
-          password: this.password,
-          roomId,
-          messageContent: {
-            creator: this.userId,
-            createData: dayjs().toJSON(),
-            type: 'text',
-            content: messageContent,
-            status,
+          auth: {
+            username: this.userId,
+            password: this.password,
+          },
+          data: {
+            roomId,
+            messageContent: {
+              creator: this.userId,
+              createData: dayjs().toJSON(),
+              type: 'text',
+              content: messageContent,
+              status,
+            },
           },
         },
         method: 'post',
@@ -75,41 +87,104 @@ export class MessageClient {
   }
   deleteMessage = async (roomId: string, messageId: string) => {
     return (
-      await axios(baseurl + 'message/delete/message', {
+      await axios(baseurl + 'message/message', {
         data: {
-          username: this.userId,
-          password: this.password,
-          roomId,
-          messageId,
+          auth: {
+            username: this.userId,
+            password: this.password,
+          },
+          data: {
+            roomId,
+            messageId,
+          },
         },
-        method: 'post',
+        method: 'delete',
       })
     ).data
   }
   updateMessage = async (roomId: string, messageId: string, updateContent: string) => {
     return (
-      await axios(baseurl + 'message/update/message', {
+      await axios(baseurl + 'message/message', {
         data: {
-          username: this.userId,
-          password: this.password,
-          roomId,
-          messageId,
-          updateContent,
+          auth: {
+            username: this.userId,
+            password: this.password,
+          },
+          data: {
+            roomId,
+            messageId,
+            updateContent,
+          },
         },
-        method: 'post',
+        method: 'patch',
       })
     ).data
   }
-  getFullList = async () => (await axios(baseurl + 'message/get/fulllist')).data.details
+  getFullList = async () => (await axios(baseurl + 'message/memberlist')).data.details
   createRoom = async (content: { users: string[]; title: string; description: string }) => {
-    const result = await axios(baseurl + 'message/create/room', {
+    const result = await axios(baseurl + 'message/room', {
       data: {
-        ...content,
-        username: this.userId,
-        password: this.password,
+        auth: {
+          username: this.userId,
+          password: this.password,
+        },
+        data: {
+          ...content,
+        },
       },
       method: 'post',
     })
-    return result.data
+    // return result.data
+    if (result.data.status === 'ok') {
+      ElNotification({
+        title: '消息组创建成功',
+        type: 'success',
+      })
+      return result.data.details
+    } else if (result.data.status === 'error') {
+      failfuc(result.data.reason, result.data.text)
+    }
+  }
+  deleteRoom = async (roomId: string) => {
+    const result = await axios(baseurl + 'message/room', {
+      data: {
+        auth: {
+          username: this.userId,
+          password: this.password,
+        },
+        data: {
+          id: roomId,
+        },
+      },
+      method: 'delete',
+    })
+    // return result.data
+    if (result.data.status === 'ok') {
+      ElNotification({
+        title: '群组删除成功',
+        type: 'success',
+      })
+      return result.data.details
+    } else if (result.data.status === 'error') {
+      failfuc(result.data.reason, result.data.text)
+    }
+  }
+  getName = (fullList: FullList[], id: string) => {
+    // .filter(item => item.value === id)[0].label
+    return fullList.filter(item => item.value === id)[0].label
+  }
+  getFlatten = (fullList: FullList[]) => {
+    const reduce = (items: FullList[]) => {
+      items.forEach(item => {
+        if (item.children) {
+          items.push(...(reduce(item.children) as FullList[]))
+        }
+        // delete item.children
+      })
+      return items.filter(item => !item.children)
+    }
+    const lists = [] as FullList[]
+    lists.push(...Array.from(unref(Object.assign([], fullList))))
+    return reduce(lists)
   }
 }

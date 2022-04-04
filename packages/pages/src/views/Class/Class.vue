@@ -34,10 +34,6 @@ axios(`${baseurl}class/${gradeid}/${classid}/login?password=${password}`).then(r
   if (response.data.status !== 'ok') {
     localStorage.removeItem('classLoginInfo')
     router.push('/')
-  } else {
-    if (isClient.value) {
-      // window.magnifique.describeNotification(gradeid, classid)
-    }
   }
 })
 </script>
