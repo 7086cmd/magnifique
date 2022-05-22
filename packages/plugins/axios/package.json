@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Check wheater use Electron or Browser to send request for magnifique.",
   "devDependencies": {
-    "axios": "0.24.0"
+    "axios": "0.27.2"
   },
   "main": "./index.ts"
 }
