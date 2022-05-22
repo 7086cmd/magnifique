@@ -2,7 +2,7 @@
   "name": "@magnifique/pages",
   "version": "2.0.1",
   "devDependencies": {
-    "@element-plus/icons-vue": "0.2.7",
+    "@element-plus/icons-vue": "1.1.4",
     "@kangc/v-md-editor": "^2.3.14",
     "@magnifique/axios": "workspace:^0.1.0",
     "@vitejs/plugin-legacy": "1.7.1",

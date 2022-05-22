@@ -61,7 +61,7 @@
     "yaml": "^1.10.2"
   },
   "devDependencies": {
-    "@element-plus/icons-vue": "0.2.7",
+    "@element-plus/icons-vue": "1.1.4",
     "@iconify/json": "^2.1.47",
     "@kangc/v-md-editor": "^2.3.14",
     "@tauri-apps/cli": "^1.0.0-rc.7",
