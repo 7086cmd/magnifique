@@ -2,6 +2,6 @@
   "name": "@magnifique/sdbdata",
   "src": "./index.ts",
   "devDependencies": {
-    "json5": "^2.2.1"
+    "json5": "2.2.1"
   }
 }
