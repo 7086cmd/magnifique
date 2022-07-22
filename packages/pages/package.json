@@ -13,7 +13,7 @@
     "monaco-editor": "0.32.1",
     "pinia": "^2.0.12",
     "prismjs": "1.27.0",
-    "unplugin-auto-import": "0.6.9",
+    "unplugin-auto-import": "0.10.0",
     "unplugin-vue-components": "0.18.5",
     "vite": "2.9.6",
     "vite-plugin-monaco-editor": "1.0.10",
